@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Rowdies&display=swap");
+
+:root {
+  --redberry-red: #fe3b1f;
+  --primary-black: #454545;
+  font-size: clamp(1vw, 10px, 3rem);
+}
+
+.form {
+  display: flex;
+  height: 100vh;
+}
+
+.form * {
+  text-align: center;
+}
+
+.formbody {
+  width: 50%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+}
+
+.form-message {
+  color: var(--redberry-red);
+  font-size: 3em;
+  font-family: "Rowdies", cursive;
+}
+
+.forminfo {
+  width: 50%;
+  background-color: black;
+}
+
+.forminfomsg {
+  color: white;
+  font-size: 3em;
+  font-family: "Rowdies", cursive;
+}
+
+.prev {
+  transform: scaleX(-1);
+}
+
+button {
+  background-color: #ffffff;
+  border: none;
+}
+
+.buttons {
+  position: absolute;
+  bottom: 20px;
+  margin: 0 auto;
+}
