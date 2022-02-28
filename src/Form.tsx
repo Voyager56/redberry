@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import next from "./images/next.svg";
+import next from "./imgs/next.svg";
 import "./Form.css";
 
 function Form() {

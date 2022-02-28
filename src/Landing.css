@@ -8,7 +8,7 @@
 
 .body {
   background-color: #000000;
-  background-image: url("./images/stars.png");
+  background-image: url("./imgs/stars.png");
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
