@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.Covid {
+  margin: 0 auto;
+}
+
 .Covid * {
   text-align: left;
 }
@@ -39,4 +43,13 @@ label {
   flex-direction: row;
   align-items: center;
   margin-bottom: 0.5em;
+}
+
+input[type="date"] {
+  margin: 0;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(38%) sepia(84%) saturate(4471%) hue-rotate(349deg)
+    brightness(100%) contrast(101%);
 }

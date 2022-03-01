@@ -15,9 +15,14 @@ function Form() {
     email: "",
     phone: "",
     exp: [],
+    covidinfo: {
+      work: "",
+      contracted: false,
+      vaccinated: false,
+    },
   });
 
-  // used different states for errors for easier validation
+  // used different states of errors for easier validation
   const [personalError, setPersonalError] = useState<any>({
     name: "",
     lastname: "",
@@ -28,6 +33,10 @@ function Form() {
   const [technicalError, setTechnicalError] = useState<any>({
     skills: "",
     experience: "",
+  });
+
+  const [covidError, setCovidError] = useState<any>({
+    work: "",
   });
 
   const validatePersonalInfo = () => {
@@ -70,11 +79,28 @@ function Form() {
     return error;
   };
 
+  const validateCovidInfo = () => {
+    const error = {
+      work: "",
+    };
+
+    if (userData.covidinfo.work.length < 3) {
+      error.work = "Please specify your work preference";
+    }
+
+    setCovidError(error);
+    return error;
+  };
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
     // validating infro based on page
-    const validationFunctions = [validatePersonalInfo, validateTechnicalInfo];
+    const validationFunctions = [
+      validatePersonalInfo,
+      validateTechnicalInfo,
+      validateCovidInfo,
+    ];
     const validationFunction = validationFunctions[page - 1];
     const error = validationFunction();
 
@@ -94,6 +120,9 @@ function Form() {
       skills: "",
       experience: "",
     });
+    setCovidError({
+      work: "",
+    });
   };
 
   // pages array for easier rendering
@@ -109,7 +138,7 @@ function Form() {
       setError={setTechnicalError}
       error={technicalError}
     />,
-    <Covid />,
+    <Covid userData={userData} setUserData={setUserData} error={covidError} />,
   ];
 
   // boilerplate text for the form
