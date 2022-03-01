@@ -17,8 +17,14 @@ function Form() {
     exp: [],
     covidinfo: {
       work: "",
-      contracted: false,
-      vaccinated: false,
+      contracted: {
+        yes: false,
+        date: "",
+      },
+      vaccinated: {
+        yes: false,
+        date: "",
+      },
     },
   });
 
@@ -37,6 +43,8 @@ function Form() {
 
   const [covidError, setCovidError] = useState<any>({
     work: "",
+    condate: "",
+    vaxDate: "",
   });
 
   const validatePersonalInfo = () => {
@@ -82,10 +90,26 @@ function Form() {
   const validateCovidInfo = () => {
     const error = {
       work: "",
+      condate: "",
+      vaxdate: "",
     };
 
     if (userData.covidinfo.work.length < 3) {
       error.work = "Please specify your work preference";
+    }
+
+    if (
+      userData.covidinfo.contracted.yes === true &&
+      userData.covidinfo.contracted.date.length === 0
+    ) {
+      error.condate = "Please specify your date of exposure";
+    }
+
+    if (
+      userData.covidinfo.vaccinated.yes === true &&
+      userData.covidinfo.vaccinated.date.length === 0
+    ) {
+      error.vaxdate = "Please specify your date of vaccination";
     }
 
     setCovidError(error);
@@ -122,6 +146,8 @@ function Form() {
     });
     setCovidError({
       work: "",
+      condate: "",
+      vaxdate: "",
     });
   };
 

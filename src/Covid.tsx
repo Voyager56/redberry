@@ -8,6 +8,7 @@ function Covid({ userData, setUserData, error }: any) {
         <div className='work-preferance'>
           <div className='work-preferance-item'>
             <input
+              checked={userData.covidinfo.work === "From Sairme Office"}
               className='radio'
               type='radio'
               name='work-preferance'
@@ -23,6 +24,7 @@ function Covid({ userData, setUserData, error }: any) {
           </div>
           <div className='work-preferance-item'>
             <input
+              checked={userData.covidinfo.work === "From Home"}
               className='radio'
               type='radio'
               name='work-preferance'
@@ -38,6 +40,7 @@ function Covid({ userData, setUserData, error }: any) {
           </div>
           <div className='work-preferance-item'>
             <input
+              checked={userData.covidinfo.work === "Hybrid"}
               className='radio'
               type='radio'
               name='work-preferance'
@@ -58,6 +61,7 @@ function Covid({ userData, setUserData, error }: any) {
         <h2>Did you contact covid 19? :(</h2>
         <div className='contracted-item'>
           <input
+            checked={userData.covidinfo.contracted.yes}
             className='radio'
             type='radio'
             name='contracted'
@@ -65,7 +69,13 @@ function Covid({ userData, setUserData, error }: any) {
             onChange={() =>
               setUserData({
                 ...userData,
-                covidinfo: { ...userData.covidinfo, contracted: true },
+                covidinfo: {
+                  ...userData.covidinfo,
+                  contracted: {
+                    ...userData.covidinfo.contracted,
+                    yes: true,
+                  },
+                },
               })
             }
           />
@@ -74,6 +84,7 @@ function Covid({ userData, setUserData, error }: any) {
         </div>
         <div className='contracted-item'>
           <input
+            checked={!userData.covidinfo.contracted.yes}
             className='radio'
             type='radio'
             name='contracted'
@@ -81,7 +92,13 @@ function Covid({ userData, setUserData, error }: any) {
             onChange={() =>
               setUserData({
                 ...userData,
-                covidinfo: { ...userData.covidinfo, contracted: false },
+                covidinfo: {
+                  ...userData.covidinfo,
+                  contracted: {
+                    ...userData.covidinfo.contracted,
+                    yes: false,
+                  },
+                },
               })
             }
           />
@@ -91,17 +108,33 @@ function Covid({ userData, setUserData, error }: any) {
         <div
           className='contracted'
           style={{
-            display: userData.covidinfo.contracted ? "block" : "none",
+            display: userData.covidinfo.contracted.yes ? "block" : "none",
             transition: "all 0.5s ease-in-out",
           }}>
           <h2>When?</h2>
-          <input type='date' />
+          <input
+            type='date'
+            value={userData.covidinfo.contracted.date}
+            onChange={(e) =>
+              setUserData({
+                ...userData,
+                covidinfo: {
+                  ...userData.covidinfo,
+                  contracted: {
+                    ...userData.covidinfo.contracted,
+                    date: e.target.value,
+                  },
+                },
+              })
+            }
+          />
         </div>
       </div>
       <div className='contracted'>
         <h2>Have you been vaccinated?</h2>
         <div className='contracted-item'>
           <input
+            checked={userData.covidinfo.vaccinated.yes}
             className='radio'
             type='radio'
             name='vaccinated'
@@ -109,7 +142,13 @@ function Covid({ userData, setUserData, error }: any) {
             onChange={() =>
               setUserData({
                 ...userData,
-                covidinfo: { ...userData.covidinfo, vaccinated: true },
+                covidinfo: {
+                  ...userData.covidinfo,
+                  vaccinated: {
+                    ...userData.covidinfo.vaccinated,
+                    yes: true,
+                  },
+                },
               })
             }
           />
@@ -118,6 +157,7 @@ function Covid({ userData, setUserData, error }: any) {
         </div>
         <div className='contracted-item'>
           <input
+            checked={!userData.covidinfo.vaccinated.yes}
             className='radio'
             type='radio'
             name='vaccinated'
@@ -125,7 +165,13 @@ function Covid({ userData, setUserData, error }: any) {
             onChange={() =>
               setUserData({
                 ...userData,
-                covidinfo: { ...userData.covidinfo, vaccinated: false },
+                covidinfo: {
+                  ...userData.covidinfo,
+                  vaccinated: {
+                    ...userData.covidinfo.vaccinated,
+                    yes: false,
+                  },
+                },
               })
             }
           />
@@ -133,9 +179,26 @@ function Covid({ userData, setUserData, error }: any) {
         </div>
         <div
           className='vaccinated'
-          style={{ display: userData.covidinfo.vaccinated ? "block" : "none" }}>
+          style={{
+            display: userData.covidinfo.vaccinated.yes ? "block" : "none",
+          }}>
           <h2>When did you get your last covid vaccine?</h2>
-          <input type='date' />
+          <input
+            type='date'
+            value={userData.covidinfo.vaccinated.date}
+            onChange={(e) =>
+              setUserData({
+                ...userData,
+                covidinfo: {
+                  ...userData.covidinfo,
+                  vaccinated: {
+                    ...userData.covidinfo.vaccinated,
+                    date: e.target.value,
+                  },
+                },
+              })
+            }
+          />
         </div>
       </div>
     </div>
