@@ -4,24 +4,30 @@ import next from "./imgs/next.svg";
 import "./Form.css";
 import Personalinfo from "./Personalinfo";
 import Technical from "./Technical";
+import Covid from "./Covid";
 
 function Form() {
+  // setting the state for the form
   const [page, setPage] = useState(1);
   const [userData, setUserData] = useState({
     name: "",
     lastname: "",
     email: "",
     phone: "",
-    skills: "",
+    exp: [],
   });
+
+  // used different states for errors for easier validation
   const [personalError, setPersonalError] = useState<any>({
     name: "",
     lastname: "",
     email: "",
     phone: "",
   });
+
   const [technicalError, setTechnicalError] = useState<any>({
     skills: "",
+    experience: "",
   });
 
   const validatePersonalInfo = () => {
@@ -54,9 +60,10 @@ function Form() {
   const validateTechnicalInfo = () => {
     const error = {
       skills: "",
+      experience: "",
     };
 
-    if (userData.skills.length < 3) {
+    if (userData.exp.length === 0) {
       error.skills = "Must select at least 1 skill";
     }
     setTechnicalError(error);
@@ -65,10 +72,16 @@ function Form() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
+    // validating infro based on page
     const validationFunctions = [validatePersonalInfo, validateTechnicalInfo];
     const validationFunction = validationFunctions[page - 1];
     const error = validationFunction();
+
+    // if there are errors, return
     if (Object.values(error).some((value) => value.length > 0)) return;
+
+    // else we increase the page and reset errors
 
     setPage(page + 1);
     setPersonalError({
@@ -79,9 +92,11 @@ function Form() {
     });
     setTechnicalError({
       skills: "",
+      experience: "",
     });
   };
 
+  // pages array for easier rendering
   const pages = [
     <Personalinfo
       userData={userData}
@@ -90,12 +105,14 @@ function Form() {
     />,
     <Technical
       userData={userData}
-      setuserData={setUserData}
+      setUserData={setUserData}
+      setError={setTechnicalError}
       error={technicalError}
     />,
-    <Personalinfo userData={userData} setuserData={setUserData} />,
+    <Covid />,
   ];
 
+  // boilerplate text for the form
   const formMessages = [
     "Hey, Rocketeer, what are your coordinates?",
     "Tell us about your skills",

@@ -5,9 +5,8 @@ import Landing from "./Landing";
 import Form from "./Form";
 
 function App() {
-  const [page, setPage] = useState(1);
-
   return (
+    // routing for the form and info
     <Router>
       <Routes>
         <Route path='/' element={<Landing />} />

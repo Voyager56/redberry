@@ -8,7 +8,6 @@
 
 .form {
   display: flex;
-  height: 100vh;
 }
 
 .form * {
@@ -22,6 +21,22 @@
   flex-direction: column;
   position: relative;
   align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+  overflow-y: scroll;
+}
+::-webkit-scrollbar {
+  width: 0.3em;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 1em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--redberry-red);
+  border-radius: 1em;
 }
 
 .form-message {
@@ -33,6 +48,7 @@
 .forminfo {
   width: 50%;
   background-color: black;
+  height: 100vh;
 }
 
 .forminfomessage {
@@ -61,7 +77,6 @@ button {
 }
 
 .buttons {
-  position: absolute;
-  bottom: 20px;
   margin: 0 auto;
+  margin-top: 2em;
 }
