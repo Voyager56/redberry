@@ -1,0 +1,35 @@
+.submit-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.submit {
+  background-color: var(--redberry-red);
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5em;
+  padding: 1em;
+  width: 15em;
+  border-radius: 2em;
+  color: white;
+  margin-bottom: 2em;
+}
+
+.back {
+  color: white;
+  background-color: black;
+  border: none;
+  text-decoration: underline;
+  font-size: 1.2em;
+  font-family: "Montserrat", sans-serif;
+}
+
+.submited {
+  color: var(--redberry-red);
+  font-family: "Montserrat", sans-serif;
+  font-size: 5em;
+}

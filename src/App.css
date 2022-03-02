@@ -1,0 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Rowdies&display=swap");
+
+:root {
+  --redberry-red: #fe3b1f;
+  --primary-black: #454545;
+  font-size: clamp(1vw, 10px, 3rem);
+}

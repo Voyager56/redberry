@@ -5,6 +5,7 @@
 
 .Covid {
   margin: 0 auto;
+  width: 30em;
 }
 
 .Covid * {
@@ -27,15 +28,18 @@
   align-items: center;
   margin-bottom: 0.5em;
 }
-/* 
-label {
-  margin-right: 1em;
-  margin-top: 0.5em;
-} */
 
 .contracted {
   display: flex;
   flex-direction: column;
+}
+
+.contracted h2 {
+  margin-top: 2em;
+}
+
+.vaccinated h2 {
+  margin-top: 2em;
 }
 
 .contracted-item {

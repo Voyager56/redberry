@@ -1,12 +1,5 @@
-import { useState } from "react";
 import "./Personalinfo.css";
-
-interface UserError {
-  name: string;
-  lastname: string;
-  email: string;
-  phone: string;
-}
+import PhoneInput from "react-phone-input-2";
 
 function Personalinfo({ userData, setuserData, error }: any) {
   return (
@@ -36,11 +29,18 @@ function Personalinfo({ userData, setuserData, error }: any) {
       />
       {error.email.length > 0 && <span className='error'>{error.email}</span>}
 
-      <input
-        type='text'
-        placeholder='Phone'
+      <PhoneInput
+        country='ge'
+        specialLabel=''
+        autoFormat={true}
+        countryCodeEditable={false}
         value={userData.phone}
-        onChange={(e) => setuserData({ ...userData, phone: e.target.value })}
+        onChange={(e) =>
+          setuserData({
+            ...userData,
+            phone: e,
+          })
+        }
       />
       {error.phone.length > 0 && <span className='error'>{error.phone}</span>}
     </form>

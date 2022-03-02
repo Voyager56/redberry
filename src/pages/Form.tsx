@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import next from "./imgs/next.svg";
+import next from "../imgs/next.svg";
 import "./Form.css";
-import Personalinfo from "./Personalinfo";
-import Technical from "./Technical";
-import Covid from "./Covid";
+import Personalinfo from "../form/Personalinfo";
+import Technical from "../form/Technical";
+import Covid from "../form/Covid";
+import Aboutyou from "../form/Aboutyou";
+import Submit from "../form/Submit";
 
 function Form() {
   // setting the state for the form
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [userData, setUserData] = useState({
     name: "",
     lastname: "",
@@ -26,25 +27,49 @@ function Form() {
         date: "",
       },
     },
+    abtuser: {
+      devtalk: false,
+      devtext: "",
+      special: "",
+    },
   });
 
   // used different states of errors for easier validation
-  const [personalError, setPersonalError] = useState<any>({
+  const [personalError, setPersonalError] = useState<{
+    name: string;
+    lastname: string;
+    email: string;
+    phone: string;
+  }>({
     name: "",
     lastname: "",
     email: "",
     phone: "",
   });
 
-  const [technicalError, setTechnicalError] = useState<any>({
+  const [technicalError, setTechnicalError] = useState<{
+    skills: string;
+    experience: string;
+  }>({
     skills: "",
     experience: "",
   });
 
-  const [covidError, setCovidError] = useState<any>({
+  const [covidError, setCovidError] = useState<{
+    work: string;
+    condate: string;
+    vaxDate: string;
+  }>({
     work: "",
     condate: "",
     vaxDate: "",
+  });
+  const [userErrors, setUserErrors] = useState<{
+    devtext: string;
+    special: string;
+  }>({
+    devtext: "",
+    special: "",
   });
 
   const validatePersonalInfo = () => {
@@ -66,9 +91,11 @@ function Form() {
     }
     if (userData.email.includes("@") === false) {
       error.email = "Invalid email";
+    } else if (userData.email.includes(".") === false) {
+      error.email = "Invalid email";
     }
-    if (userData.phone.length < 3) {
-      error.phone = "Phone must be at least 3 characters";
+    if (userData.phone.length != 12) {
+      error.phone = "Phone must be 9 digits";
     }
     setPersonalError(error);
     return error;
@@ -91,7 +118,7 @@ function Form() {
     const error = {
       work: "",
       condate: "",
-      vaxdate: "",
+      vaxDate: "",
     };
 
     if (userData.covidinfo.work.length < 3) {
@@ -109,21 +136,45 @@ function Form() {
       userData.covidinfo.vaccinated.yes === true &&
       userData.covidinfo.vaccinated.date.length === 0
     ) {
-      error.vaxdate = "Please specify your date of vaccination";
+      error.vaxDate = "Please specify your date of vaccination";
     }
 
     setCovidError(error);
     return error;
   };
+  const validateUserInfo = () => {
+    const error = {
+      devtext: "",
+      special: "",
+    };
 
-  const handleSubmit = (e: any) => {
+    if (userData.abtuser.devtalk === false) {
+      error.devtext = "";
+      error.special = "";
+      setUserErrors(error);
+      return error;
+    }
+    if (userData.abtuser.devtext.length < 3) {
+      error.devtext = "Please specify your development text";
+    }
+    if (userData.abtuser.special.length < 3) {
+      error.special = "Please specify your special skills";
+    }
+    setUserErrors(error);
+    return error;
+  };
+
+  const handleSubmit = (e: any, index: number) => {
     e.preventDefault();
 
     // validating infro based on page
+    if (index < page) setPage(index + 1);
+
     const validationFunctions = [
       validatePersonalInfo,
       validateTechnicalInfo,
       validateCovidInfo,
+      validateUserInfo,
     ];
     const validationFunction = validationFunctions[page - 1];
     const error = validationFunction();
@@ -133,7 +184,7 @@ function Form() {
 
     // else we increase the page and reset errors
 
-    setPage(page + 1);
+    setPage(index + 1);
     setPersonalError({
       name: "",
       lastname: "",
@@ -147,7 +198,7 @@ function Form() {
     setCovidError({
       work: "",
       condate: "",
-      vaxdate: "",
+      vaxDate: "",
     });
   };
 
@@ -165,6 +216,12 @@ function Form() {
       error={technicalError}
     />,
     <Covid userData={userData} setUserData={setUserData} error={covidError} />,
+    <Aboutyou
+      userData={userData}
+      setUserData={setUserData}
+      userError={userErrors}
+    />,
+    <Submit userData={userData} />,
   ];
 
   // boilerplate text for the form
@@ -191,31 +248,49 @@ function Form() {
 
   return (
     <div className='form'>
-      <div className='formbody'>
-        <h1 className='form-message'>{formMessages[page - 1]}</h1>
-        {pages[page - 1]}
-        <div className='buttons'>
-          <button
-            className='prev'
-            onClick={() => {
-              page === 1 ? setPage(1) : setPage(page - 1);
-            }}>
-            <img src={next} alt='prev' />
-          </button>
-          <button
-            className='next'
-            onClick={(e) => {
-              page === 4 ? setPage(4) : handleSubmit(e);
-              console.log(userData);
-            }}>
-            <img src={next} alt='next' />
-          </button>
+      {page === 5 ? (
+        <Submit userData={userData} setPage={setPage} />
+      ) : (
+        <div className='wrap'>
+          <div className='formbody'>
+            <h1 className='form-message'>{formMessages[page - 1]}</h1>
+            {pages[page - 1]}
+            <div className='buttons'>
+              <button
+                className='prev'
+                onClick={() => {
+                  page === 1 ? setPage(1) : setPage(page - 1);
+                }}>
+                <img src={next} alt='prev' />
+              </button>
+              {pages.map((pg, index) => {
+                return (
+                  <button
+                    className='page-button'
+                    style={{
+                      opacity: index < page ? 1 : 0.5,
+                    }}
+                    onClick={(e) => {
+                      handleSubmit(e, index);
+                    }}></button>
+                );
+              })}
+              <button
+                className='next'
+                onClick={(e) => {
+                  page == 5 ? setPage(5) : handleSubmit(e, page);
+                }}>
+                <img src={next} alt='next' />
+              </button>
+            </div>
+          </div>
+
+          <div className='forminfo'>
+            <h1 className='forminfomessage'>{formInfo[page - 1]}</h1>
+            <p className='forminfotext'>{formInfoText[page - 1]}</p>
+          </div>
         </div>
-      </div>
-      <div className='forminfo'>
-        <h1 className='forminfomessage'>{formInfo[page - 1]}</h1>
-        <p className='forminfotext'>{formInfoText[page - 1]}</p>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import "./Covid.css";
 
 function Covid({ userData, setUserData, error }: any) {
@@ -79,7 +80,6 @@ function Covid({ userData, setUserData, error }: any) {
               })
             }
           />
-
           <label>Yes</label>
         </div>
         <div className='contracted-item'>
@@ -105,11 +105,16 @@ function Covid({ userData, setUserData, error }: any) {
 
           <label>No</label>
         </div>
-        <div
+        <motion.div
           className='contracted'
           style={{
-            display: userData.covidinfo.contracted.yes ? "block" : "none",
-            transition: "all 0.5s ease-in-out",
+            height: userData.covidinfo.contracted.yes ? "100%" : "0",
+            opacity: userData.covidinfo.contracted.yes ? 1 : 0,
+          }}
+          animate={{
+            height: userData.covidinfo.contracted.yes ? "100%" : "0",
+            opacity: userData.covidinfo.contracted.yes ? 1 : 0,
+            transition: { duration: 0.5 },
           }}>
           <h2>When?</h2>
           <input
@@ -128,7 +133,7 @@ function Covid({ userData, setUserData, error }: any) {
               })
             }
           />
-        </div>
+        </motion.div>
       </div>
       <div className='contracted'>
         <h2>Have you been vaccinated?</h2>
@@ -177,12 +182,21 @@ function Covid({ userData, setUserData, error }: any) {
           />
           <label>No</label>
         </div>
-        <div
+        <motion.div
           className='vaccinated'
           style={{
+            height: userData.covidinfo.vaccinated.yes ? "100%" : "0",
+            opacity: userData.covidinfo.vaccinated.yes ? 1 : 0,
             display: userData.covidinfo.vaccinated.yes ? "block" : "none",
+          }}
+          animate={{
+            height: userData.covidinfo.vaccinated.yes ? "100%" : "0",
+            opacity: userData.covidinfo.vaccinated.yes ? 1 : 0,
+            display: userData.covidinfo.vaccinated.yes ? "block" : "none",
+            transition: { duration: 0.5 },
           }}>
           <h2>When did you get your last covid vaccine?</h2>
+
           <input
             type='date'
             value={userData.covidinfo.vaccinated.date}
@@ -199,7 +213,7 @@ function Covid({ userData, setUserData, error }: any) {
               })
             }
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

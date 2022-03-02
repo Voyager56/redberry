@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import { motion } from "framer-motion";
+import remove from "../imgs/remove.svg";
 import "./Technical.css";
 
 const getSkills = async () => {
@@ -77,16 +78,20 @@ function Technical({ userData, setUserData, error, setError }: any) {
 
   const handleClick = () => {
     // checking if skill is already selected and if it is we return
+    const errors = validateTechnicalInfo();
+
     if (
       skillAndExperience.some(
         (obj: { skill: string; experience: number; id: number }) =>
           obj.skill === selectedSkills.value
       )
-    )
+    ) {
+      errors.skills = "Skill already selected";
+      setErrors(errors);
       return;
+    }
 
     // calling native validation and checking if there is an error
-    const errors = validateTechnicalInfo();
     if (Object.values(errors).some((error: string) => error !== "")) return;
 
     // if not we add the skill to the array and reset the form
@@ -112,6 +117,10 @@ function Technical({ userData, setUserData, error, setError }: any) {
           id: skillAndExperience.length + 1,
         },
       ],
+    });
+    setErrors({
+      skills: "",
+      experience: "",
     });
     setError({
       skills: "",
@@ -141,7 +150,8 @@ function Technical({ userData, setUserData, error, setError }: any) {
           styles={{
             container: (base) => ({
               ...base,
-              width: "35em",
+              width: "31rem",
+              fontFamily: "Montserrat",
             }),
           }}
           onChange={(e) => setSelectedSkills(e)}
@@ -195,7 +205,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
                       whileTap={{ scale: 0.8 }}
                       className='remove-skill'
                       onClick={() => handleRemove(obj.id)}>
-                      Remove
+                      <img src={remove} alt='removebutton' />
                     </motion.button>
                   </div>
                 );
@@ -215,7 +225,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
                       whileTap={{ scale: 0.8 }}
                       className='remove-skill'
                       onClick={() => handleRemove(obj.id)}>
-                      Remove
+                      <img src={remove} alt='removebutton' />
                     </motion.button>
                   </div>
                 );

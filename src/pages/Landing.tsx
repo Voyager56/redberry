@@ -1,7 +1,7 @@
 import "./Landing.css";
-import rocketman from "./imgs/rocketman.png";
+import rocketman from "../imgs/rocketman.png";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, animate } from "framer-motion";
 
 export default function () {
   return (
@@ -18,31 +18,34 @@ export default function () {
         className='start'>
         Start Questionaire
       </motion.a>
-      <Link to='/submited' className='submited'>
+      <Link to='/submited' className='submited-applications'>
         Submitted Applications
       </Link>
-      <AnimatePresence>
+      <motion.div
+        animate={{
+          rotate: [0, -90, 0],
+          x: [0, 500, -500, 0],
+          y: [70, -40, 0],
+          opacity: [0, 1],
+          transition: {
+            duration: 2,
+          },
+        }}>
         <motion.img
           src={rocketman}
           alt='rocketman'
           className='rocketeer'
           animate={{
             rotate: [0, -90, 0],
-            x: [0, 500, -500, 0],
-            y: [70, -40, 0],
-            opacity: [0, 1],
             transition: {
-              duration: 2,
+              delay: 2,
+              duration: 10,
+              ease: "easeInOut",
+              repeat: Infinity,
             },
           }}
-          exit={{
-            rotate: -90,
-            x: -500,
-            y: -40,
-            opacity: 0,
-          }}
         />
-      </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
