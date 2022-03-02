@@ -52,8 +52,8 @@ function Submit({ userData, setPage }: any) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => {
-              // handleSubmit();
-              // setSubmited(true);
+              handleSubmit();
+              setSubmited(true);
             }}>
             Submit
           </motion.button>
