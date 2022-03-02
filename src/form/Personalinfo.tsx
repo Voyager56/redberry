@@ -5,13 +5,15 @@ function Personalinfo({ userData, setuserData, error }: any) {
   return (
     <form className='personalinfo'>
       <input
+        className='personal-input'
         type='text'
-        placeholder='Name'
+        placeholder='First Name'
         value={userData.name}
         onChange={(e) => setuserData({ ...userData, name: e.target.value })}
       />
       {error.name.length > 0 && <span className='error'>{error.name}</span>}
       <input
+        className='personal-input'
         type='text'
         placeholder='Last Name'
         value={userData.lastname}
@@ -22,6 +24,7 @@ function Personalinfo({ userData, setuserData, error }: any) {
       )}
 
       <input
+        className='personal-input'
         type='email'
         placeholder='Email'
         value={userData.email}
@@ -30,11 +33,13 @@ function Personalinfo({ userData, setuserData, error }: any) {
       {error.email.length > 0 && <span className='error'>{error.email}</span>}
 
       <PhoneInput
-        country='ge'
+        placeholder='Mobile Number'
         specialLabel=''
-        autoFormat={true}
-        countryCodeEditable={false}
         value={userData.phone}
+        inputStyle={{
+          textAlign: "left",
+          paddingLeft: "10px",
+        }}
         onChange={(e) =>
           setuserData({
             ...userData,

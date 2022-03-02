@@ -1,5 +1,31 @@
 import { motion } from "framer-motion";
+import DateFnsUtils from "@date-io/date-fns";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import "./Covid.css";
+
+const materialTheme = createTheme({
+  overrides: {
+    MuiIconButton: {
+      root: {
+        color: "#fe3b1f",
+      },
+    },
+    MuiOutlinedInput: {
+      root: {
+        color: "#fe3b1f",
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        color: "#fe3b1f",
+      },
+    },
+  },
+});
 
 function Covid({ userData, setUserData, error }: any) {
   return (
@@ -117,22 +143,36 @@ function Covid({ userData, setUserData, error }: any) {
             transition: { duration: 0.5 },
           }}>
           <h2>When?</h2>
-          <input
-            type='date'
-            value={userData.covidinfo.contracted.date}
-            onChange={(e) =>
-              setUserData({
-                ...userData,
-                covidinfo: {
-                  ...userData.covidinfo,
-                  contracted: {
-                    ...userData.covidinfo.contracted,
-                    date: e.target.value,
-                  },
-                },
-              })
-            }
-          />
+          <ThemeProvider theme={materialTheme}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                inputProps={{
+                  disabledUnderline: true,
+                }}
+                style={{
+                  border: "2px solid var(--redberry-red)",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  width: "17em",
+                }}
+                value={new Date(userData.covidinfo.contracted.date)}
+                placeholder='Date'
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    covidinfo: {
+                      ...userData.covidinfo,
+                      contracted: {
+                        ...userData.covidinfo.contracted,
+                        date: e!.toISOString().split("T")[0],
+                      },
+                    },
+                  })
+                }
+                format='MM/dd/yyyy'
+              />
+            </MuiPickersUtilsProvider>
+          </ThemeProvider>
         </motion.div>
       </div>
       <div className='contracted'>
@@ -196,23 +236,35 @@ function Covid({ userData, setUserData, error }: any) {
             transition: { duration: 0.5 },
           }}>
           <h2>When did you get your last covid vaccine?</h2>
-
-          <input
-            type='date'
-            value={userData.covidinfo.vaccinated.date}
-            onChange={(e) =>
-              setUserData({
-                ...userData,
-                covidinfo: {
-                  ...userData.covidinfo,
-                  vaccinated: {
-                    ...userData.covidinfo.vaccinated,
-                    date: e.target.value,
-                  },
-                },
-              })
-            }
-          />
+          <ThemeProvider theme={materialTheme}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                inputProps={{
+                  disabledUnderline: true,
+                }}
+                style={{
+                  border: "2px solid var(--redberry-red)",
+                  borderRadius: "5px",
+                  padding: "10px",
+                }}
+                value={new Date(userData.covidinfo.vaccinated.date)}
+                placeholder='Date'
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    covidinfo: {
+                      ...userData.covidinfo,
+                      vaccinated: {
+                        ...userData.covidinfo.vaccinated,
+                        date: e!.toISOString().split("T")[0],
+                      },
+                    },
+                  })
+                }
+                format='MM/dd/yyyy'
+              />
+            </MuiPickersUtilsProvider>
+          </ThemeProvider>
         </motion.div>
       </div>
     </div>

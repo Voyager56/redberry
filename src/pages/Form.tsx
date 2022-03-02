@@ -89,14 +89,14 @@ function Form() {
     if (userData.email.length < 3) {
       error.email = "Email must be at least 3 characters";
     }
-    if (userData.email.includes("@") === false) {
-      error.email = "Invalid email";
-    } else if (userData.email.includes(".") === false) {
-      error.email = "Invalid email";
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)) {
+      error.email = "Not valid email";
     }
-    if (userData.phone.length != 12) {
+    if (!userData.phone.startsWith("995")) {
+      error.phone = "Phone number must start with 995";
+    } else if (userData.phone.length != 12) {
       error.phone = "Phone must be 9 digits";
-    }
+    } else if (userData.phone[3] != "5") error.phone = "Invalid phone number";
     setPersonalError(error);
     return error;
   };

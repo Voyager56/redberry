@@ -5,6 +5,7 @@
 }
 
 .input-experience {
+  font-style: italic;
   margin: 1.5em;
   margin-bottom: 0.5em;
   width: 30rem;
@@ -14,6 +15,8 @@
 
 .button-add {
   background-color: var(--redberry-red);
+  color: white;
+  font-style: italic;
   margin: 1.5em;
   margin-bottom: 0.5em;
   width: 20em;
@@ -52,4 +55,5 @@
   margin-left: 1em;
   font-size: 1.2em;
   font-family: "Montserrat", sans-serif;
+  font-style: italic;
 }

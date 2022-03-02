@@ -152,6 +152,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
               ...base,
               width: "31rem",
               fontFamily: "Montserrat",
+              fontStyle: "italic",
             }),
           }}
           onChange={(e) => setSelectedSkills(e)}
@@ -197,7 +198,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
                   <div key={i} className='skill-item'>
                     <div className='skill-name'>{obj.skill} </div>
                     <div className='skill-experience'>
-                      Years of Experience {obj.experience}
+                      Years of Experience: {obj.experience} years
                     </div>
                     <motion.button
                       animate={{ scale: 1.2 }}
