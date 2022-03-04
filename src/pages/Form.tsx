@@ -80,10 +80,10 @@ function Form() {
       error.email = "Not valid email";
     }
     if (userData.phone.length > 0) {
-      if (!userData.phone.startsWith("995")) {
+      if (!userData.phone.startsWith("+995")) {
         error.phone = "Phone number must start with +995";
       } else if (userData.phone.length != 12) {
-        error.phone = "Phone must be 9 digits";
+        error.phone = "Phone must be 12 digits";
       } else if (userData.phone[3] != "5")
         error.phone = "Georgian phone number only";
     }
@@ -254,7 +254,7 @@ function Form() {
       userData={userData}
       setUserData={setUserData}
       setError={setStateErrors}
-      error={stateErrors.technical}
+      error={stateErrors}
     />,
     <Covid
       userData={userData}

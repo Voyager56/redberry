@@ -3,7 +3,6 @@ import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
 import Checkbox from "@material-ui/core/Checkbox";
 import "./Covid.css";
-import { red } from "@mui/material/colors";
 
 function Covid({ userData, setUserData, error, setError }: any) {
   const handleChande = (e: any) => {

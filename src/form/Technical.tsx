@@ -33,21 +33,21 @@ function Technical({ userData, setUserData, error, setError }: any) {
 
   // native validation form
   const validateTechnicalInfo = () => {
-    const error = {
+    const err = {
       skills: "",
       experience: "",
     };
 
     if (selectedSkill.title === "") {
-      error.skills = "Must select at least 1 skill";
+      err.skills = "Must select at least 1 skill";
     }
     if (experience === "") {
-      error.experience = "Must select an experience level";
+      err.experience = "Must select an experience level";
     } else if (!+experience) {
-      error.experience = "Experience must be a number";
+      err.experience = "Experience must be a number";
     }
-    setLocalErrors(error);
-    return error;
+    setLocalErrors(err);
+    return err;
   };
 
   const handleClick = () => {
@@ -66,7 +66,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
     }
 
     // calling native validation and checking if there is an error
-    if (Object.values(errors).some((error: string) => error !== "")) return;
+    if (Object.values(errors).some((err: string) => err !== "")) return;
 
     // if not we add the skill to the array and reset the form
 
@@ -186,7 +186,9 @@ function Technical({ userData, setUserData, error, setError }: any) {
             );
           }
         )}
-        {error.skills && <span className='error'>{error.skills}</span>}
+        {error.technical.skills && (
+          <span className='error'>{error.technical.skills}</span>
+        )}
       </div>
     </>
   );

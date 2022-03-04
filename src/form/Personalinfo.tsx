@@ -23,10 +23,10 @@ function Personalinfo({ userData, setuserData, errors, setError }: any) {
       err.email = "Not valid email";
     }
     if (userData.phone.length > 0) {
-      if (!userData.phone.startsWith("995")) {
+      if (!userData.phone.startsWith("+995")) {
         err.phone = "Phone number must start with +995";
       } else if (userData.phone.length != 12) {
-        err.phone = "Phone must be 9 digits";
+        err.phone = "Phone must be 12 digits";
       } else if (userData.phone[3] != "5")
         err.phone = "Georgian phone number only";
     }
@@ -91,15 +91,24 @@ function Personalinfo({ userData, setuserData, errors, setError }: any) {
         type='text'
         name='phone'
         placeholder='Phone'
-        value={userData.phone}
+        value={userData.phone.length > 0 ? userData.phone : "+"}
+        pattern='/^-?\d+\.?\d*$/'
         onChange={(e) => {
-          // /^\+?995?/.test(e.target.value)
-          //   ? setuserData({ ...userData, phone: e.target.value })
-          //   : null;
-          /^(\+\d{1,2}\s?)/.test(e.target.value)
-            ? setuserData({ ...userData, phone: e.target.value })
-            : null;
-          // setuserData({ ...userData, phone: e.target.value });
+          if (/[+][^-0-9\/]+/.test(e.target.value)) return;
+          setuserData({
+            ...userData,
+            [e.target.name]: userData.phone.includes("+")
+              ? e.target.value
+              : `+${e.target.value}`,
+          });
+          const localErrors = validatePersonalInfo(e.target.name);
+          setError({
+            ...errors,
+            personal: {
+              ...errors.personal,
+              [e.target.name]: localErrors,
+            },
+          });
         }}
       />
 

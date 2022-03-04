@@ -39,7 +39,7 @@ function Aboutyou({ userData, setUserData, userError, setError }: any) {
             checkedIcon={<CircleCheckedFilled />}
             name='dev'
             checked={userData.abtuser.devtalk === "no"}
-            onChange={(e) => {
+            onChange={() => {
               setUserData({
                 ...userData,
                 abtuser: {
