@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import Select from "react-select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { motion } from "framer-motion";
 import remove from "../imgs/remove.svg";
 import "./Technical.css";
@@ -11,49 +13,23 @@ const getSkills = async () => {
 };
 
 // Select form theme
-const styles = (theme: any) => {
-  return {
-    ...theme,
-    colors: {
-      ...theme.colors,
-      primary: "var(--redberry-red)",
-      primary25: "var(--redberry-red)",
-    },
-  };
-};
-
-// formating data for the Select dropdown
-const formatData = (data: any) => {
-  const formated: { value: any; label: any }[] = [];
-  data.forEach((obj: { title: any }) => {
-    formated.push({
-      value: obj.title,
-      label: obj.title,
-    });
-  });
-  return formated;
-};
 
 function Technical({ userData, setUserData, error, setError }: any) {
   // native error handling for the form(we also take error from parent element for final validation)
-  const [errors, setErrors] = useState({
+  const [localErrors, setLocalErrors] = useState({
     skills: "",
     experience: "",
   });
-  const [skills, setSkills] = useState<{ value: string; label: string }[]>([]);
+  const [skills, setSkills] = useState<{ id: number; title: string }[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<{
-    value: string;
-    label: string;
-  }>({ value: "", label: "" });
+    title: string;
+  }>({ title: "" });
   const [experience, setExperience] = useState<string>("");
-  const [skillAndExperience, setSkillAndExperience] = useState<
-    { skill: string; experience: number; id: number }[]
-  >([]);
 
   // fetchin skills from the API on the first render of the component
   useEffect(() => {
     getSkills().then((data) => {
-      setSkills(formatData(data));
+      setSkills(data);
     });
   }, []);
 
@@ -64,7 +40,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
       experience: "",
     };
 
-    if (selectedSkills.value === "") {
+    if (selectedSkills.title === "") {
       error.skills = "Must select at least 1 skill";
     }
     if (experience === "") {
@@ -72,7 +48,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
     } else if (!+experience) {
       error.experience = "Experience must be a number";
     }
-    setErrors(error);
+    setLocalErrors(error);
     return error;
   };
 
@@ -81,13 +57,13 @@ function Technical({ userData, setUserData, error, setError }: any) {
     const errors = validateTechnicalInfo();
 
     if (
-      skillAndExperience.some(
+      userData.exp.some(
         (obj: { skill: string; experience: number; id: number }) =>
-          obj.skill === selectedSkills.value
+          obj.skill === selectedSkills.title
       )
     ) {
       errors.skills = "Skill already selected";
-      setErrors(errors);
+      setLocalErrors(errors);
       return;
     }
 
@@ -95,14 +71,11 @@ function Technical({ userData, setUserData, error, setError }: any) {
     if (Object.values(errors).some((error: string) => error !== "")) return;
 
     // if not we add the skill to the array and reset the form
-    setSkillAndExperience([
-      ...skillAndExperience,
-      {
-        skill: selectedSkills.value,
-        experience: Number(experience),
-        id: skillAndExperience.length + 1,
-      },
-    ]);
+
+    // searching for id of the selected skill
+    const id = skills.filter(
+      (obj: { id: number; title: string }) => obj.title === selectedSkills.title
+    )[0].id;
 
     setExperience("");
 
@@ -112,13 +85,13 @@ function Technical({ userData, setUserData, error, setError }: any) {
       exp: [
         ...userData.exp,
         {
-          skill: selectedSkills.value,
-          experience: experience,
-          id: skillAndExperience.length + 1,
+          skill: selectedSkills.title,
+          experience: Number(experience),
+          id: id,
         },
       ],
     });
-    setErrors({
+    setLocalErrors({
       skills: "",
       experience: "",
     });
@@ -132,40 +105,40 @@ function Technical({ userData, setUserData, error, setError }: any) {
   };
 
   const handleRemove = (id: number) => {
-    // removing the skill from the array
-    setSkillAndExperience(
-      skillAndExperience.filter((obj: { id: number }) => obj.id !== id)
-    );
-
-    // sending the data to the parent element
+    // remove the skill from the parent element
     setUserData({
       ...userData,
-      exp: userData.exp.filter((obj: { id: number }) => obj.id !== id),
+      exp: userData.exp.filter(
+        (obj: { skill: string; experience: number; id: number }) =>
+          obj.id !== id
+      ),
+    });
+  };
+
+  const handleChande = (e: React.ChangeEvent<{ value: string }>) => {
+    setSelectedSkills({
+      title: e.target.value,
     });
   };
 
   return (
     <>
       <form className='technical'>
-        <Select
-          options={skills}
-          theme={styles}
-          styles={{
-            container: (base) => ({
-              ...base,
-              marginTop: "3rem",
-              width: "31rem",
-              fontFamily: "Montserrat",
-              fontStyle: "italic",
-            }),
-          }}
-          onChange={(e) => setSelectedSkills(e)}
-          className='multi-select'
-          classNamePrefix='Skills'
-        />
+        <FormControl sx={{ m: 1, width: "31em" }}>
+          <Select
+            label='Skill'
+            onChange={(e) => handleChande(e as any)}
+            renderValue={(value) => `${value}`}>
+            {skills.map((skill: { id: number; title: string }) => (
+              <MenuItem key={skill.id} value={skill.title}>
+                {skill.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        {errors.skills.length > 0 && (
-          <span className='error'>{errors.skills}</span>
+        {localErrors.skills.length > 0 && (
+          <span className='error'>{localErrors.skills}</span>
         )}
 
         <input
@@ -176,8 +149,8 @@ function Technical({ userData, setUserData, error, setError }: any) {
           onChange={(e) => setExperience(e.target.value)}
         />
 
-        {errors.experience.length > 0 && (
-          <span className='error'>{errors.experience}</span>
+        {localErrors.experience.length > 0 && (
+          <span className='error'>{localErrors.experience}</span>
         )}
 
         <button
@@ -192,51 +165,29 @@ function Technical({ userData, setUserData, error, setError }: any) {
 
       <div className='skill-container'>
         {/* conditional rendering for saved data in case of going to different page and then returning back */}
-        {userData.exp.length > 0
-          ? userData.exp.map(
-              (
-                obj: { skill: string; experience: number; id: number },
-                i: number
-              ) => {
-                return (
-                  <div key={i} className='skill-item'>
-                    <div className='skill-name'>{obj.skill} </div>
-                    <div className='skill-experience'>
-                      Years of Experience: {obj.experience} years
-                    </div>
-                    <motion.button
-                      animate={{ scale: 1.2 }}
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.8 }}
-                      className='remove-skill'
-                      onClick={() => handleRemove(obj.id)}>
-                      <img src={remove} alt='removebutton' />
-                    </motion.button>
-                  </div>
-                );
-              }
-            )
-          : skillAndExperience.map(
-              (obj: { skill: string; experience: number; id: number }, i) => {
-                return (
-                  <div key={i} className='skill-item'>
-                    <div className='skill-name'>{obj.skill} </div>
-                    <div className='skill-experience'>
-                      Years of Experience {obj.experience}
-                    </div>
-                    <motion.button
-                      animate={{ scale: 1.2 }}
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.8 }}
-                      className='remove-skill'
-                      onClick={() => handleRemove(obj.id)}>
-                      <img src={remove} alt='removebutton' />
-                    </motion.button>
-                  </div>
-                );
-              }
-            )}
-
+        {userData.exp.map(
+          (
+            obj: { skill: string; experience: number; id: number },
+            i: number
+          ) => {
+            return (
+              <div key={i} className='skill-item'>
+                <div className='skill-name'>{obj.skill} </div>
+                <div className='skill-experience'>
+                  Years of Experience: {obj.experience} years
+                </div>
+                <motion.button
+                  animate={{ scale: 1.2 }}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.8 }}
+                  className='remove-skill'
+                  onClick={() => handleRemove(obj.id)}>
+                  <img src={remove} alt='removebutton' />
+                </motion.button>
+              </div>
+            );
+          }
+        )}
         {error.skills && <span className='error'>{error.skills}</span>}
       </div>
     </>
