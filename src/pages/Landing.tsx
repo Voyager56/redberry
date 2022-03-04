@@ -1,7 +1,7 @@
 import "./Landing.css";
 import rocketman from "../imgs/rocketman.png";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence, animate } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function () {
   return (

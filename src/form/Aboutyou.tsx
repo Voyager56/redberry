@@ -4,7 +4,7 @@ import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
 import Checkbox from "@material-ui/core/Checkbox";
 import "./Aboutyou.css";
 
-function Aboutyou({ userData, setUserData, userError }: any) {
+function Aboutyou({ userData, setUserData, userError, setError }: any) {
   return (
     <div className='container'>
       <div className='devtalk'>
@@ -14,15 +14,21 @@ function Aboutyou({ userData, setUserData, userError }: any) {
             icon={<CircleUnchecked />}
             checkedIcon={<CircleCheckedFilled />}
             checked={userData.abtuser.devtalk === "yes"}
-            onChange={(e) =>
+            onChange={(e) => {
               setUserData({
                 ...userData,
                 abtuser: {
                   ...userData.abtuser,
                   devtalk: "yes",
                 },
-              })
-            }
+              });
+              setError({
+                ...userError,
+                aboutyou: {
+                  devtalk: "",
+                },
+              });
+            }}
           />
 
           <label>Yes</label>
@@ -33,20 +39,28 @@ function Aboutyou({ userData, setUserData, userError }: any) {
             checkedIcon={<CircleCheckedFilled />}
             name='dev'
             checked={userData.abtuser.devtalk === "no"}
-            onChange={(e) =>
+            onChange={(e) => {
               setUserData({
                 ...userData,
                 abtuser: {
                   ...userData.abtuser,
                   devtalk: "no",
                 },
-              })
-            }
+              });
+              setError({
+                ...userError,
+                aboutyou: {
+                  devtalk: "",
+                },
+              });
+            }}
           />
           <label>No</label>
         </div>
       </div>
-      {userError.devtalk && <p className='error'>{userError.devtalk}</p>}
+      {userError.aboutyou.devtalk && (
+        <p className='error'>{userError.aboutyou.devtalk}</p>
+      )}
       <motion.div
         style={{
           height: userData.abtuser.devtalk === "yes" ? "100%" : "0",
@@ -67,18 +81,27 @@ function Aboutyou({ userData, setUserData, userError }: any) {
           style={{ resize: "none", textAlign: "left" }}
           name='devtalk'
           value={userData.abtuser.devtext}
-          onChange={(e) =>
+          onChange={(e) => {
             setUserData({
               ...userData,
               abtuser: { ...userData.abtuser, devtext: e.target.value },
-            })
-          }
+            });
+            if (userData.abtuser.devtext.length > 3) {
+              setError({
+                ...userError,
+                aboutyou: {
+                  ...userError.aboutyou,
+                  devtalk_topic: "",
+                },
+              });
+            }
+          }}
           placeholder='I would...'
           rows={6}
           cols={70}></textarea>
 
-        {userError.devtalk_topic && (
-          <p className='error'>{userError.devtalk_topic}</p>
+        {userError.aboutyou.devtalk_topic && (
+          <p className='error'>{userError.aboutyou.devtalk_topic}</p>
         )}
         <h2>Tell us something special</h2>
         <textarea
@@ -86,20 +109,29 @@ function Aboutyou({ userData, setUserData, userError }: any) {
           style={{ resize: "none", textAlign: "left" }}
           name='special'
           value={userData.abtuser.special}
-          onChange={(e) =>
+          onChange={(e) => {
             setUserData({
               ...userData,
               abtuser: {
                 ...userData.abtuser,
                 special: e.target.value,
               },
-            })
-          }
+            });
+            if (userData.abtuser.special.length > 3) {
+              setError({
+                ...userError,
+                aboutyou: {
+                  ...userError.aboutyou,
+                  something_special: "",
+                },
+              });
+            }
+          }}
           placeholder='I...'
           rows={4}
           cols={70}></textarea>
-        {userError.something_special && (
-          <p className='error'>{userError.something_special}</p>
+        {userError.aboutyou.something_special && (
+          <p className='error'>{userError.aboutyou.something_special}</p>
         )}
       </motion.div>
     </div>

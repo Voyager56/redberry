@@ -1,40 +1,26 @@
 import { motion } from "framer-motion";
-import DateFnsUtils from "@date-io/date-fns";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
 import Checkbox from "@material-ui/core/Checkbox";
 import "./Covid.css";
 import { red } from "@mui/material/colors";
 
-const materialTheme = createTheme({
-  palette: {
-    primary: red,
-  },
-  overrides: {
-    MuiIconButton: {
-      root: {
-        color: "#fe3b1f",
-      },
-    },
-    MuiOutlinedInput: {
-      root: {
-        color: "#fe3b1f",
-      },
-    },
-    MuiInputLabel: {
-      root: {
-        color: "#fe3b1f",
-      },
-    },
-  },
-});
+function Covid({ userData, setUserData, error, setError }: any) {
+  const handleChande = (e: any) => {
+    setUserData({
+      ...userData,
+      covidinfo: { ...userData.covidinfo, work: e.target.value },
+    });
 
-function Covid({ userData, setUserData, error }: any) {
+    // changing error when user checks  the checkbox
+    setError({
+      ...error,
+      covid: {
+        ...error.covid,
+        work: "",
+      },
+    });
+  };
   return (
     <div className='Covid'>
       <div className='work'>
@@ -49,12 +35,7 @@ function Covid({ userData, setUserData, error }: any) {
               name='work-preferance'
               value='From Sairme Office'
               style={{ marginRight: "1rem" }}
-              onChange={(e: { target: { value: any } }) =>
-                setUserData({
-                  ...userData,
-                  covidinfo: { ...userData.covidinfo, work: e.target.value },
-                })
-              }
+              onChange={handleChande}
             />
             <label>From Sairme Office</label>
           </div>
@@ -67,12 +48,7 @@ function Covid({ userData, setUserData, error }: any) {
               name='work-preferance'
               value='From Home'
               style={{ marginRight: "1rem" }}
-              onChange={(e: { target: { value: any } }) =>
-                setUserData({
-                  ...userData,
-                  covidinfo: { ...userData.covidinfo, work: e.target.value },
-                })
-              }
+              onChange={handleChande}
             />
             <label>From Home</label>
           </div>
@@ -85,17 +61,12 @@ function Covid({ userData, setUserData, error }: any) {
               name='work-preferance'
               value='Hybrid'
               style={{ marginRight: "1rem" }}
-              onChange={(e: { target: { value: any } }) =>
-                setUserData({
-                  ...userData,
-                  covidinfo: { ...userData.covidinfo, work: e.target.value },
-                })
-              }
+              onChange={handleChande}
             />
             <label>Hybrid</label>
           </div>
         </div>
-        {error.work && <p className='error'>{error.work}</p>}
+        {error.covid.work && <p className='error'>{error.covid.work}</p>}
       </div>
       <div className='contracted'>
         <h2>Did you contact covid 19? :(</h2>
@@ -108,7 +79,7 @@ function Covid({ userData, setUserData, error }: any) {
             style={{ marginRight: "1rem" }}
             name='contracted'
             value='Yes'
-            onChange={() =>
+            onChange={(e) => {
               setUserData({
                 ...userData,
                 covidinfo: {
@@ -118,8 +89,15 @@ function Covid({ userData, setUserData, error }: any) {
                     yes: "yes",
                   },
                 },
-              })
-            }
+              });
+              setError({
+                ...error,
+                covid: {
+                  ...error.covid,
+                  [e.target.name]: "",
+                },
+              });
+            }}
           />
           <label>Yes</label>
         </div>
@@ -132,7 +110,7 @@ function Covid({ userData, setUserData, error }: any) {
             style={{ marginRight: "1rem" }}
             name='contracted'
             value='No'
-            onChange={() =>
+            onChange={(e) => {
               setUserData({
                 ...userData,
                 covidinfo: {
@@ -142,8 +120,15 @@ function Covid({ userData, setUserData, error }: any) {
                     yes: "no",
                   },
                 },
-              })
-            }
+              });
+              setError({
+                ...error,
+                covid: {
+                  ...error.covid,
+                  [e.target.name]: "",
+                },
+              });
+            }}
           />
 
           <label>No</label>
@@ -160,48 +145,50 @@ function Covid({ userData, setUserData, error }: any) {
             transition: { duration: 0.5 },
           }}>
           <h2>When?</h2>
-          <ThemeProvider theme={materialTheme}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                inputProps={{
-                  disabledUnderline: true,
-                }}
-                style={{
-                  border: "2px solid var(--redberry-red)",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  width: "17em",
-                }}
-                value={
-                  userData.covidinfo.contracted.date.length > 0
-                    ? new Date(userData.covidinfo.contracted.date)
-                        .toISOString()
-                        .split("T")[0]
-                    : new Date().toISOString().split("T")[0]
-                }
-                placeholder='Date'
-                onChange={(e) =>
-                  setUserData({
-                    ...userData,
-                    covidinfo: {
-                      ...userData.covidinfo,
-                      contracted: {
-                        ...userData.covidinfo.contracted,
-                        date: e!.toISOString().split("T")[0],
-                      },
-                    },
-                  })
-                }
-                format='dd/MM/yyyy'
-              />
-            </MuiPickersUtilsProvider>
-          </ThemeProvider>
+          <input
+            // style={{
+            //   border: "2px solid var(--redberry-red)",
+            //   borderRadius: "5px",
+            //   padding: "10px",
+            //   width: "17em",
+            // }}
+            type='date'
+            pattern='Date'
+            value={
+              userData.covidinfo.contracted.date.length > 0
+                ? new Date(userData.covidinfo.contracted.date)
+                    .toISOString()
+                    .split("T")[0]
+                : ""
+            }
+            onChange={(e) => {
+              setUserData({
+                ...userData,
+                covidinfo: {
+                  ...userData.covidinfo,
+                  contracted: {
+                    ...userData.covidinfo.contracted,
+                    date: e.target.value,
+                  },
+                },
+              });
+              setError({
+                ...error,
+                covid: {
+                  ...error.covid,
+                  contracted_date: "",
+                },
+              });
+            }}
+          />
         </motion.div>
-        {error.contracted_date && (
-          <p className='error'>{error.contracted_date}</p>
+        {error.covid.contracted_date && (
+          <p className='error'>{error.covid.contracted_date}</p>
         )}
       </div>
-      {error.contracted && <p className='error'>{error.contracted}</p>}
+      {error.covid.contracted && (
+        <p className='error'>{error.covid.contracted}</p>
+      )}
       <div className='contracted'>
         <h2>Have you been vaccinated?</h2>
         <div className='contracted-item'>
@@ -211,9 +198,9 @@ function Covid({ userData, setUserData, error }: any) {
             checked={userData.covidinfo.vaccinated.yes === "yes"}
             className='radio'
             style={{ marginRight: "1rem" }}
-            name='vaccinated'
+            name='vaxed'
             value='Yes'
-            onChange={() =>
+            onChange={(e) => {
               setUserData({
                 ...userData,
                 covidinfo: {
@@ -223,8 +210,15 @@ function Covid({ userData, setUserData, error }: any) {
                     yes: "yes",
                   },
                 },
-              })
-            }
+              });
+              setError({
+                ...error,
+                covid: {
+                  ...error.covid,
+                  [e.target.name]: "",
+                },
+              });
+            }}
           />
 
           <label>Yes</label>
@@ -236,9 +230,9 @@ function Covid({ userData, setUserData, error }: any) {
             checked={userData.covidinfo.vaccinated.yes === "no"}
             className='radio'
             style={{ marginRight: "1rem" }}
-            name='vaccinated'
+            name='vaxed'
             value='No'
-            onChange={() =>
+            onChange={(e) => {
               setUserData({
                 ...userData,
                 covidinfo: {
@@ -248,8 +242,15 @@ function Covid({ userData, setUserData, error }: any) {
                     yes: "no",
                   },
                 },
-              })
-            }
+              });
+              setError({
+                ...error,
+                covid: {
+                  ...error.covid,
+                  [e.target.name]: "",
+                },
+              });
+            }}
           />
           <label>No</label>
         </div>
@@ -269,47 +270,42 @@ function Covid({ userData, setUserData, error }: any) {
             transition: { duration: 0.5 },
           }}>
           <h2>When did you get your last covid vaccine?</h2>
-          <ThemeProvider theme={materialTheme}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                inputProps={{
-                  disabledUnderline: true,
-                }}
-                style={{
-                  border: "2px solid var(--redberry-red)",
-                  borderRadius: "5px",
-                  padding: "10px",
-                }}
-                value={
-                  userData.covidinfo.vaccinated.date.length > 0
-                    ? new Date(userData.covidinfo.vaccinated.date)
-                        .toISOString()
-                        .split("T")[0]
-                    : new Date().toISOString().split("T")[0]
-                }
-                placeholder='Date'
-                onChange={(e) =>
-                  setUserData({
-                    ...userData,
-                    covidinfo: {
-                      ...userData.covidinfo,
-                      vaccinated: {
-                        ...userData.covidinfo.vaccinated,
-                        date: e!.toISOString().split("T")[0],
-                      },
-                    },
-                  })
-                }
-                format='dd/MM/yyyy'
-              />
-            </MuiPickersUtilsProvider>
-          </ThemeProvider>
+          <input
+            type='date'
+            value={
+              userData.covidinfo.vaccinated.date.length > 0
+                ? new Date(userData.covidinfo.vaccinated.date)
+                    .toISOString()
+                    .split("T")[0]
+                : ""
+            }
+            placeholder='Date'
+            onChange={(e) => {
+              setUserData({
+                ...userData,
+                covidinfo: {
+                  ...userData.covidinfo,
+                  vaccinated: {
+                    ...userData.covidinfo.vaccinated,
+                    date: e.target.value,
+                  },
+                },
+              });
+              setError({
+                ...error,
+                covid: {
+                  ...error.covid,
+                  vaccinated_date: "",
+                },
+              });
+            }}
+          />
         </motion.div>
-        {error.vaccinated_date && (
-          <p className='error'>{error.vaccinated_date}</p>
+        {error.covid.vaccinated_date && (
+          <p className='error'>{error.covid.vaccinated_date}</p>
         )}
       </div>
-      {error.vaxed && <p className='error'>{error.vaxed}</p>}
+      {error.covid.vaxed && <p className='error'>{error.covid.vaxed}</p>}
     </div>
   );
 }

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { MenuItem, FormControl, Select } from "@mui/material";
 import { motion } from "framer-motion";
 import remove from "../imgs/remove.svg";
 import "./Technical.css";
@@ -21,7 +19,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
     experience: "",
   });
   const [skills, setSkills] = useState<{ id: number; title: string }[]>([]);
-  const [selectedSkills, setSelectedSkills] = useState<{
+  const [selectedSkill, setSelectedSkill] = useState<{
     title: string;
   }>({ title: "" });
   const [experience, setExperience] = useState<string>("");
@@ -40,7 +38,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
       experience: "",
     };
 
-    if (selectedSkills.title === "") {
+    if (selectedSkill.title === "") {
       error.skills = "Must select at least 1 skill";
     }
     if (experience === "") {
@@ -59,7 +57,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
     if (
       userData.exp.some(
         (obj: { skill: string; experience: number; id: number }) =>
-          obj.skill === selectedSkills.title
+          obj.skill === selectedSkill.title
       )
     ) {
       errors.skills = "Skill already selected";
@@ -74,7 +72,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
 
     // searching for id of the selected skill
     const id = skills.filter(
-      (obj: { id: number; title: string }) => obj.title === selectedSkills.title
+      (obj: { id: number; title: string }) => obj.title === selectedSkill.title
     )[0].id;
 
     setExperience("");
@@ -85,7 +83,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
       exp: [
         ...userData.exp,
         {
-          skill: selectedSkills.title,
+          skill: selectedSkill.title,
           experience: Number(experience),
           id: id,
         },
@@ -116,7 +114,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
   };
 
   const handleChande = (e: React.ChangeEvent<{ value: string }>) => {
-    setSelectedSkills({
+    setSelectedSkill({
       title: e.target.value,
     });
   };

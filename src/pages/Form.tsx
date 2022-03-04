@@ -81,10 +81,11 @@ function Form() {
     }
     if (userData.phone.length > 0) {
       if (!userData.phone.startsWith("995")) {
-        error.phone = "Phone number must start with 995";
+        error.phone = "Phone number must start with +995";
       } else if (userData.phone.length != 12) {
         error.phone = "Phone must be 9 digits";
-      } else if (userData.phone[3] != "5") error.phone = "Invalid phone number";
+      } else if (userData.phone[3] != "5")
+        error.phone = "Georgian phone number only";
     }
     setStateErrors({
       ...stateErrors,
@@ -246,7 +247,8 @@ function Form() {
     <Personalinfo
       userData={userData}
       setuserData={setUserData}
-      error={stateErrors.personal}
+      setError={setStateErrors}
+      errors={stateErrors}
     />,
     <Technical
       userData={userData}
@@ -257,12 +259,14 @@ function Form() {
     <Covid
       userData={userData}
       setUserData={setUserData}
-      error={stateErrors.covid}
+      error={stateErrors}
+      setError={setStateErrors}
     />,
     <Aboutyou
       userData={userData}
       setUserData={setUserData}
-      userError={stateErrors.aboutyou}
+      setError={setStateErrors}
+      userError={stateErrors}
     />,
     <Submit userData={userData} />,
   ];

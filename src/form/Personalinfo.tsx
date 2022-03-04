@@ -1,53 +1,111 @@
 import "./Personalinfo.css";
-import PhoneInput from "react-phone-input-2";
 
-function Personalinfo({ userData, setuserData, error }: any) {
+function Personalinfo({ userData, setuserData, errors, setError }: any) {
+  // validating the form when user types
+  const validatePersonalInfo = (key: string) => {
+    const err = {
+      name: "",
+      lastname: "",
+      email: "",
+      phone: "",
+    };
+
+    if (userData.name.length < 3) {
+      err.name = "Name must be at least 3 characters";
+    }
+    if (userData.lastname.length < 3) {
+      err.lastname = "Last name must be at least 3 characters";
+    }
+    if (userData.email.length < 3) {
+      err.email = "Email must be at least 3 characters";
+    }
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)) {
+      err.email = "Not valid email";
+    }
+    if (userData.phone.length > 0) {
+      if (!userData.phone.startsWith("995")) {
+        err.phone = "Phone number must start with +995";
+      } else if (userData.phone.length != 12) {
+        err.phone = "Phone must be 9 digits";
+      } else if (userData.phone[3] != "5")
+        err.phone = "Georgian phone number only";
+    }
+    return err[key as keyof typeof err];
+  };
+  const handleChange = (e: any) => {
+    // handling validation depending on the input field
+    setuserData({
+      ...userData,
+      [e.target.name]: e.target.value,
+    });
+    const localErrors = validatePersonalInfo(e.target.name);
+    setError({
+      ...errors,
+      personal: {
+        ...errors.personal,
+        [e.target.name]: localErrors,
+      },
+    });
+  };
   return (
     <form className='personalinfo'>
       <input
         className='personal-input'
         type='text'
+        name='name'
         placeholder='First Name'
         value={userData.name}
-        onChange={(e) => setuserData({ ...userData, name: e.target.value })}
+        onChange={handleChange}
       />
-      {error.name.length > 0 && <span className='error'>{error.name}</span>}
+      {errors.personal.name.length > 0 && (
+        <span className='error'>{errors.personal.name}</span>
+      )}
       <input
         className='personal-input'
         type='text'
+        name='lastname'
         placeholder='Last Name'
         value={userData.lastname}
-        onChange={(e) => setuserData({ ...userData, lastname: e.target.value })}
+        onChange={handleChange}
       />
-      {error.lastname.length > 0 && (
-        <span className='error'>{error.lastname}</span>
+      {errors.personal.lastname.length > 0 && (
+        <span className='error'>{errors.personal.lastname}</span>
       )}
 
       <input
         className='personal-input'
         type='email'
+        name='email'
         placeholder='Email'
         value={userData.email}
-        onChange={(e) => setuserData({ ...userData, email: e.target.value })}
+        onChange={handleChange}
       />
-      {error.email.length > 0 && <span className='error'>{error.email}</span>}
+      {errors.personal.email.length > 0 && (
+        <span className='error'>{errors.personal.email}</span>
+      )}
 
-      <PhoneInput
-        placeholder='Mobile Number'
-        specialLabel=''
+      {/*  write phone input
+       */}
+      <input
+        className='personal-input'
+        type='text'
+        name='phone'
+        placeholder='Phone'
         value={userData.phone}
-        inputStyle={{
-          textAlign: "left",
-          paddingLeft: "10px",
+        onChange={(e) => {
+          // /^\+?995?/.test(e.target.value)
+          //   ? setuserData({ ...userData, phone: e.target.value })
+          //   : null;
+          /^(\+\d{1,2}\s?)/.test(e.target.value)
+            ? setuserData({ ...userData, phone: e.target.value })
+            : null;
+          // setuserData({ ...userData, phone: e.target.value });
         }}
-        onChange={(e) =>
-          setuserData({
-            ...userData,
-            phone: e,
-          })
-        }
       />
-      {error.phone.length > 0 && <span className='error'>{error.phone}</span>}
+
+      {errors.personal.phone.length > 0 && (
+        <span className='error'>{errors.personal.phone}</span>
+      )}
     </form>
   );
 }
