@@ -1,9 +1,5 @@
-import React from 'react'
-
 function Submited() {
-  return (
-    <div>Submited</div>
-  )
+  return <div>Submited</div>;
 }
 
-export default Submited
+export default Submited;

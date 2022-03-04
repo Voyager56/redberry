@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import next from "../imgs/next.svg";
 import "./Form.css";
 import Personalinfo from "../form/Personalinfo";
@@ -264,7 +264,7 @@ function Form() {
       setUserData={setUserData}
       userError={stateErrors.aboutyou}
     />,
-    // <Submit userData={userData} />,
+    <Submit userData={userData} />,
   ];
 
   // boilerplate text for the form

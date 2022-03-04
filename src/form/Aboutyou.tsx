@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { createTheme } from "@material-ui/core/styles";
-
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
 import Checkbox from "@material-ui/core/Checkbox";
