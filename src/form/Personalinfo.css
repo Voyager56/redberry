@@ -1,12 +1,16 @@
 .personalinfo {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  width: 40vw;
+  align-items: center;
+  margin-top: -2em;
 }
 
 input {
   margin: 1.5em;
-  margin-bottom: 0.5em;
-  width: 20em;
+  margin-bottom: 0em;
+  width: 30em;
   height: 3em;
 }
 

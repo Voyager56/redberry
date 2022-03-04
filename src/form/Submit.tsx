@@ -1,9 +1,11 @@
 import "./Submit.css";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 function Submit({ userData, setPage }: any) {
   const [submited, setSubmited] = useState(false);
+  let navigate = useNavigate();
   const token = "409e877a-2a8c-45c3-848b-aae4b389365c";
   const data = {
     token: token,
@@ -15,14 +17,20 @@ function Submit({ userData, setPage }: any) {
     work_preference: {
       work: userData.covidinfo.work,
     },
-    had_covid: userData.covidinfo.contracted.yes,
+    had_covid: userData.covidinfo.contracted.yes === "yes" ? true : false,
     had_covid_at: userData.covidinfo.contracted.date,
-    vaccinated: userData.covidinfo.vaccinated.yes,
+    vaccinated: userData.covidinfo.vaccinated.yes === "yes" ? true : false,
     vaccinated_at: userData.covidinfo.vaccinated.date,
-    will_organize_devtalk: userData.abtuser.devtalk,
+    will_organize_devtalk: userData.abtuser.devtalk === "yes" ? true : false,
     devtalk_topic: userData.abtuser.devtext,
     something_special: userData.abtuser.special,
   };
+
+  if (submited) {
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
+  }
 
   const handleSubmit = async () => {
     const res = await fetch(
@@ -50,10 +58,19 @@ function Submit({ userData, setPage }: any) {
           <motion.button
             className='submit'
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileTap={{
+              rotate: [0, 360],
+              scale: 0.9,
+              transition: {
+                duration: 0.1,
+                ease: "easeInOut",
+              },
+            }}
             onClick={() => {
-              handleSubmit();
-              setSubmited(true);
+              setTimeout(() => {
+                // handleSubmit();
+                setSubmited(true);
+              }, 0.5);
             }}>
             Submit
           </motion.button>

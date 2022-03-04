@@ -4,6 +4,7 @@
 }
 
 .Covid {
+  margin-top: 3em;
   margin: 0 auto;
   width: 30em;
 }
@@ -14,7 +15,7 @@
 
 .radio {
   height: 1em;
-  margin: 0 0.5em;
+  margin: 0 1em;
   width: 1em;
   border-radius: 4px;
   outline: none;

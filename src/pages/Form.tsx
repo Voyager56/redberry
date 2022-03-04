@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import next from "../imgs/next.svg";
 import "./Form.css";
 import Personalinfo from "../form/Personalinfo";
@@ -19,57 +19,44 @@ function Form() {
     covidinfo: {
       work: "",
       contracted: {
-        yes: false,
+        yes: "",
         date: "",
       },
       vaccinated: {
-        yes: false,
+        yes: "",
         date: "",
       },
     },
     abtuser: {
-      devtalk: false,
+      devtalk: "",
       devtext: "",
       special: "",
     },
   });
 
-  // used different states of errors for easier validation
-  const [personalError, setPersonalError] = useState<{
-    name: string;
-    lastname: string;
-    email: string;
-    phone: string;
-  }>({
-    name: "",
-    lastname: "",
-    email: "",
-    phone: "",
-  });
-
-  const [technicalError, setTechnicalError] = useState<{
-    skills: string;
-    experience: string;
-  }>({
-    skills: "",
-    experience: "",
-  });
-
-  const [covidError, setCovidError] = useState<{
-    work: string;
-    condate: string;
-    vaxDate: string;
-  }>({
-    work: "",
-    condate: "",
-    vaxDate: "",
-  });
-  const [userErrors, setUserErrors] = useState<{
-    devtext: string;
-    special: string;
-  }>({
-    devtext: "",
-    special: "",
+  const [stateErrors, setStateErrors] = useState({
+    personal: {
+      name: "",
+      lastname: "",
+      email: "",
+      phone: "",
+    },
+    technical: {
+      skills: "",
+      experience: "",
+    },
+    covid: {
+      work: "",
+      vaxed: "",
+      contracted: "",
+      contracted_date: "",
+      vaccinated_date: "",
+    },
+    aboutyou: {
+      devtalk: "",
+      devtalk_topic: "",
+      something_special: "",
+    },
   });
 
   const validatePersonalInfo = () => {
@@ -92,12 +79,17 @@ function Form() {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)) {
       error.email = "Not valid email";
     }
-    if (!userData.phone.startsWith("995")) {
-      error.phone = "Phone number must start with 995";
-    } else if (userData.phone.length != 12) {
-      error.phone = "Phone must be 9 digits";
-    } else if (userData.phone[3] != "5") error.phone = "Invalid phone number";
-    setPersonalError(error);
+    if (userData.phone.length > 0) {
+      if (!userData.phone.startsWith("995")) {
+        error.phone = "Phone number must start with 995";
+      } else if (userData.phone.length != 12) {
+        error.phone = "Phone must be 9 digits";
+      } else if (userData.phone[3] != "5") error.phone = "Invalid phone number";
+    }
+    setStateErrors({
+      ...stateErrors,
+      personal: error,
+    });
     return error;
   };
 
@@ -110,15 +102,21 @@ function Form() {
     if (userData.exp.length === 0) {
       error.skills = "Must select at least 1 skill";
     }
-    setTechnicalError(error);
+
+    setStateErrors({
+      ...stateErrors,
+      technical: error,
+    });
     return error;
   };
 
   const validateCovidInfo = () => {
     const error = {
       work: "",
-      condate: "",
-      vaxDate: "",
+      vaxed: "",
+      contracted: "",
+      contracted_date: "",
+      vaccinated_date: "",
     };
 
     if (userData.covidinfo.work.length < 3) {
@@ -126,50 +124,75 @@ function Form() {
     }
 
     if (
-      userData.covidinfo.contracted.yes === true &&
+      userData.covidinfo.contracted.yes === "yes" &&
       userData.covidinfo.contracted.date.length === 0
     ) {
-      error.condate = "Please specify your date of exposure";
+      error.contracted_date = "Please specify your date of exposure";
     }
 
     if (
-      userData.covidinfo.vaccinated.yes === true &&
+      userData.covidinfo.vaccinated.yes === "yes" &&
       userData.covidinfo.vaccinated.date.length === 0
     ) {
-      error.vaxDate = "Please specify your date of vaccination";
+      error.vaccinated_date = "Please specify your date of vaccination";
+    }
+    if (
+      userData.covidinfo.vaccinated.yes === "yes" &&
+      new Date() < new Date(userData.covidinfo.vaccinated.date)
+    ) {
+      error.vaccinated_date = "Date of vaccination cannot be in the future";
+    }
+    if (
+      userData.covidinfo.contracted.yes === "yes" &&
+      new Date() < new Date(userData.covidinfo.contracted.date)
+    ) {
+      error.contracted_date = "Date of exposure cannot be in the future";
+    }
+    if (userData.covidinfo.contracted.yes.length === 0) {
+      error.contracted = "Please specify if you have contracted Covid-19";
+    }
+    if (userData.covidinfo.vaccinated.yes.length === 0) {
+      error.vaxed = "Please specify if you have been vaccinated";
     }
 
-    setCovidError(error);
+    setStateErrors({
+      ...stateErrors,
+      covid: error,
+    });
     return error;
   };
+
   const validateUserInfo = () => {
     const error = {
-      devtext: "",
-      special: "",
+      devtalk: "",
+      devtalk_topic: "",
+      something_special: "",
     };
 
-    if (userData.abtuser.devtalk === false) {
-      error.devtext = "";
-      error.special = "";
-      setUserErrors(error);
-      return error;
+    if (userData.abtuser.devtalk === "") {
+      error.devtalk = "Please tell us if you'll organize devtalk";
     }
-    if (userData.abtuser.devtext.length < 3) {
-      error.devtext = "Please specify your development text";
+    if (userData.abtuser.devtalk === "yes") {
+      if (userData.abtuser.devtext.length < 3) {
+        error.devtalk_topic = "Please specify your devtalk subject";
+      }
+      if (userData.abtuser.special.length < 3) {
+        error.something_special = "Please specify your special skills";
+      }
     }
-    if (userData.abtuser.special.length < 3) {
-      error.special = "Please specify your special skills";
-    }
-    setUserErrors(error);
+
+    setStateErrors({
+      ...stateErrors,
+      aboutyou: {
+        ...stateErrors.aboutyou,
+        ...error,
+      },
+    });
     return error;
   };
 
-  const handleSubmit = (e: any, index: number) => {
-    e.preventDefault();
-
+  const validateForm = () => {
     // validating infro based on page
-    if (index < page) setPage(index + 1);
-
     const validationFunctions = [
       validatePersonalInfo,
       validateTechnicalInfo,
@@ -177,28 +200,44 @@ function Form() {
       validateUserInfo,
     ];
     const validationFunction = validationFunctions[page - 1];
-    const error = validationFunction();
+    return validationFunction();
+  };
+
+  const handleSubmit = (e: any, index: number) => {
+    e.preventDefault();
+
+    if (index < page) setPage(index + 1);
 
     // if there are errors, return
-    if (Object.values(error).some((value) => value.length > 0)) return;
+    const errors = validateForm();
+    if (Object.values(errors).some((error) => error.length > 0)) return;
 
     // else we increase the page and reset errors
 
     setPage(index + 1);
-    setPersonalError({
-      name: "",
-      lastname: "",
-      email: "",
-      phone: "",
-    });
-    setTechnicalError({
-      skills: "",
-      experience: "",
-    });
-    setCovidError({
-      work: "",
-      condate: "",
-      vaxDate: "",
+    setStateErrors({
+      personal: {
+        name: "",
+        lastname: "",
+        email: "",
+        phone: "",
+      },
+      technical: {
+        skills: "",
+        experience: "",
+      },
+      covid: {
+        work: "",
+        vaxed: "",
+        contracted: "",
+        contracted_date: "",
+        vaccinated_date: "",
+      },
+      aboutyou: {
+        devtalk: "",
+        devtalk_topic: "",
+        something_special: "",
+      },
     });
   };
 
@@ -207,21 +246,25 @@ function Form() {
     <Personalinfo
       userData={userData}
       setuserData={setUserData}
-      error={personalError}
+      error={stateErrors.personal}
     />,
     <Technical
       userData={userData}
       setUserData={setUserData}
-      setError={setTechnicalError}
-      error={technicalError}
+      setError={setStateErrors}
+      error={stateErrors.technical}
     />,
-    <Covid userData={userData} setUserData={setUserData} error={covidError} />,
+    <Covid
+      userData={userData}
+      setUserData={setUserData}
+      error={stateErrors.covid}
+    />,
     <Aboutyou
       userData={userData}
       setUserData={setUserData}
-      userError={userErrors}
+      userError={stateErrors.aboutyou}
     />,
-    <Submit userData={userData} />,
+    // <Submit userData={userData} />,
   ];
 
   // boilerplate text for the form
@@ -251,7 +294,7 @@ function Form() {
       {page === 5 ? (
         <Submit userData={userData} setPage={setPage} />
       ) : (
-        <div className='wrap'>
+        <div className='form-wrap'>
           <div className='formbody'>
             <h1 className='form-message'>{formMessages[page - 1]}</h1>
             {pages[page - 1]}

@@ -1,4 +1,9 @@
 import { motion } from "framer-motion";
+import { createTheme } from "@material-ui/core/styles";
+
+import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
+import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
+import Checkbox from "@material-ui/core/Checkbox";
 import "./Aboutyou.css";
 
 function Aboutyou({ userData, setUserData, userError }: any) {
@@ -7,17 +12,16 @@ function Aboutyou({ userData, setUserData, userError }: any) {
       <div className='devtalk'>
         <h2>Would you attend Devtalks and maybe also organize your own?</h2>
         <div className='wrap'>
-          <input
-            name='dev'
-            className='radio'
-            type='radio'
-            checked={userData.abtuser.devtalk}
+          <Checkbox
+            icon={<CircleUnchecked />}
+            checkedIcon={<CircleCheckedFilled />}
+            checked={userData.abtuser.devtalk === "yes"}
             onChange={(e) =>
               setUserData({
                 ...userData,
                 abtuser: {
                   ...userData.abtuser,
-                  devtalk: true,
+                  devtalk: "yes",
                 },
               })
             }
@@ -26,17 +30,17 @@ function Aboutyou({ userData, setUserData, userError }: any) {
           <label>Yes</label>
         </div>
         <div className='wrap'>
-          <input
+          <Checkbox
+            icon={<CircleUnchecked />}
+            checkedIcon={<CircleCheckedFilled />}
             name='dev'
-            className='radio'
-            type='radio'
-            checked={!userData.abtuser.devtalk}
+            checked={userData.abtuser.devtalk === "no"}
             onChange={(e) =>
               setUserData({
                 ...userData,
                 abtuser: {
                   ...userData.abtuser,
-                  devtalk: false,
+                  devtalk: "no",
                 },
               })
             }
@@ -44,13 +48,15 @@ function Aboutyou({ userData, setUserData, userError }: any) {
           <label>No</label>
         </div>
       </div>
+      {userError.devtalk && <p className='error'>{userError.devtalk}</p>}
       <motion.div
         style={{
-          opacity: userData.abtuser.devtalk ? "1" : "0",
+          height: userData.abtuser.devtalk === "yes" ? "100%" : "0",
+          opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
         }}
         animate={{
-          x: userData.abtuser.devtalk ? 0 : -100,
-          opacity: userData.abtuser.devtalk ? 1 : 0,
+          height: userData.abtuser.devtalk === "yes" ? "100%" : "0",
+          opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
           transition: {
             duration: 0.5,
             ease: "easeInOut",
@@ -73,7 +79,9 @@ function Aboutyou({ userData, setUserData, userError }: any) {
           rows={6}
           cols={70}></textarea>
 
-        {userError.devtext && <p className='error'>{userError.devtext}</p>}
+        {userError.devtalk_topic && (
+          <p className='error'>{userError.devtalk_topic}</p>
+        )}
         <h2>Tell us something special</h2>
         <textarea
           id='special'
@@ -92,7 +100,9 @@ function Aboutyou({ userData, setUserData, userError }: any) {
           placeholder='I...'
           rows={4}
           cols={70}></textarea>
-        {userError.special && <p className='error'>{userError.special}</p>}
+        {userError.something_special && (
+          <p className='error'>{userError.something_special}</p>
+        )}
       </motion.div>
     </div>
   );

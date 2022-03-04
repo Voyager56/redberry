@@ -123,8 +123,11 @@ function Technical({ userData, setUserData, error, setError }: any) {
       experience: "",
     });
     setError({
-      skills: "",
-      experience: "",
+      ...error,
+      technical: {
+        skills: "",
+        experience: "",
+      },
     });
   };
 
@@ -150,6 +153,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
           styles={{
             container: (base) => ({
               ...base,
+              marginTop: "3rem",
               width: "31rem",
               fontFamily: "Montserrat",
               fontStyle: "italic",

@@ -5,9 +5,16 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
+import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
+import Checkbox from "@material-ui/core/Checkbox";
 import "./Covid.css";
+import { red } from "@mui/material/colors";
 
 const materialTheme = createTheme({
+  palette: {
+    primary: red,
+  },
   overrides: {
     MuiIconButton: {
       root: {
@@ -34,13 +41,15 @@ function Covid({ userData, setUserData, error }: any) {
         <h2> how would you prefer to work?</h2>
         <div className='work-preferance'>
           <div className='work-preferance-item'>
-            <input
+            <Checkbox
+              icon={<CircleUnchecked />}
+              checkedIcon={<CircleCheckedFilled />}
               checked={userData.covidinfo.work === "From Sairme Office"}
               className='radio'
-              type='radio'
               name='work-preferance'
               value='From Sairme Office'
-              onChange={(e) =>
+              style={{ marginRight: "1rem" }}
+              onChange={(e: { target: { value: any } }) =>
                 setUserData({
                   ...userData,
                   covidinfo: { ...userData.covidinfo, work: e.target.value },
@@ -50,13 +59,15 @@ function Covid({ userData, setUserData, error }: any) {
             <label>From Sairme Office</label>
           </div>
           <div className='work-preferance-item'>
-            <input
+            <Checkbox
+              icon={<CircleUnchecked />}
+              checkedIcon={<CircleCheckedFilled />}
               checked={userData.covidinfo.work === "From Home"}
               className='radio'
-              type='radio'
               name='work-preferance'
               value='From Home'
-              onChange={(e) =>
+              style={{ marginRight: "1rem" }}
+              onChange={(e: { target: { value: any } }) =>
                 setUserData({
                   ...userData,
                   covidinfo: { ...userData.covidinfo, work: e.target.value },
@@ -66,13 +77,15 @@ function Covid({ userData, setUserData, error }: any) {
             <label>From Home</label>
           </div>
           <div className='work-preferance-item'>
-            <input
+            <Checkbox
+              icon={<CircleUnchecked />}
+              checkedIcon={<CircleCheckedFilled />}
               checked={userData.covidinfo.work === "Hybrid"}
               className='radio'
-              type='radio'
               name='work-preferance'
               value='Hybrid'
-              onChange={(e) =>
+              style={{ marginRight: "1rem" }}
+              onChange={(e: { target: { value: any } }) =>
                 setUserData({
                   ...userData,
                   covidinfo: { ...userData.covidinfo, work: e.target.value },
@@ -87,10 +100,12 @@ function Covid({ userData, setUserData, error }: any) {
       <div className='contracted'>
         <h2>Did you contact covid 19? :(</h2>
         <div className='contracted-item'>
-          <input
-            checked={userData.covidinfo.contracted.yes}
+          <Checkbox
+            icon={<CircleUnchecked />}
+            checkedIcon={<CircleCheckedFilled />}
+            checked={userData.covidinfo.contracted.yes === "yes"}
             className='radio'
-            type='radio'
+            style={{ marginRight: "1rem" }}
             name='contracted'
             value='Yes'
             onChange={() =>
@@ -100,7 +115,7 @@ function Covid({ userData, setUserData, error }: any) {
                   ...userData.covidinfo,
                   contracted: {
                     ...userData.covidinfo.contracted,
-                    yes: true,
+                    yes: "yes",
                   },
                 },
               })
@@ -109,10 +124,12 @@ function Covid({ userData, setUserData, error }: any) {
           <label>Yes</label>
         </div>
         <div className='contracted-item'>
-          <input
-            checked={!userData.covidinfo.contracted.yes}
+          <Checkbox
+            icon={<CircleUnchecked />}
+            checkedIcon={<CircleCheckedFilled />}
+            checked={userData.covidinfo.contracted.yes === "no"}
             className='radio'
-            type='radio'
+            style={{ marginRight: "1rem" }}
             name='contracted'
             value='No'
             onChange={() =>
@@ -122,7 +139,7 @@ function Covid({ userData, setUserData, error }: any) {
                   ...userData.covidinfo,
                   contracted: {
                     ...userData.covidinfo.contracted,
-                    yes: false,
+                    yes: "no",
                   },
                 },
               })
@@ -134,12 +151,12 @@ function Covid({ userData, setUserData, error }: any) {
         <motion.div
           className='contracted'
           style={{
-            height: userData.covidinfo.contracted.yes ? "100%" : "0",
-            opacity: userData.covidinfo.contracted.yes ? 1 : 0,
+            height: userData.covidinfo.contracted.yes === "yes" ? "100%" : "0",
+            opacity: userData.covidinfo.contracted.yes === "yes" ? 1 : 0,
           }}
           animate={{
-            height: userData.covidinfo.contracted.yes ? "100%" : "0",
-            opacity: userData.covidinfo.contracted.yes ? 1 : 0,
+            height: userData.covidinfo.contracted.yes === "yes" ? "100%" : "0",
+            opacity: userData.covidinfo.contracted.yes === "yes" ? 1 : 0,
             transition: { duration: 0.5 },
           }}>
           <h2>When?</h2>
@@ -155,7 +172,13 @@ function Covid({ userData, setUserData, error }: any) {
                   padding: "10px",
                   width: "17em",
                 }}
-                value={new Date(userData.covidinfo.contracted.date)}
+                value={
+                  userData.covidinfo.contracted.date.length > 0
+                    ? new Date(userData.covidinfo.contracted.date)
+                        .toISOString()
+                        .split("T")[0]
+                    : new Date().toISOString().split("T")[0]
+                }
                 placeholder='Date'
                 onChange={(e) =>
                   setUserData({
@@ -169,19 +192,25 @@ function Covid({ userData, setUserData, error }: any) {
                     },
                   })
                 }
-                format='MM/dd/yyyy'
+                format='dd/MM/yyyy'
               />
             </MuiPickersUtilsProvider>
           </ThemeProvider>
         </motion.div>
+        {error.contracted_date && (
+          <p className='error'>{error.contracted_date}</p>
+        )}
       </div>
+      {error.contracted && <p className='error'>{error.contracted}</p>}
       <div className='contracted'>
         <h2>Have you been vaccinated?</h2>
         <div className='contracted-item'>
-          <input
-            checked={userData.covidinfo.vaccinated.yes}
+          <Checkbox
+            icon={<CircleUnchecked />}
+            checkedIcon={<CircleCheckedFilled />}
+            checked={userData.covidinfo.vaccinated.yes === "yes"}
             className='radio'
-            type='radio'
+            style={{ marginRight: "1rem" }}
             name='vaccinated'
             value='Yes'
             onChange={() =>
@@ -191,7 +220,7 @@ function Covid({ userData, setUserData, error }: any) {
                   ...userData.covidinfo,
                   vaccinated: {
                     ...userData.covidinfo.vaccinated,
-                    yes: true,
+                    yes: "yes",
                   },
                 },
               })
@@ -201,10 +230,12 @@ function Covid({ userData, setUserData, error }: any) {
           <label>Yes</label>
         </div>
         <div className='contracted-item'>
-          <input
-            checked={!userData.covidinfo.vaccinated.yes}
+          <Checkbox
+            icon={<CircleUnchecked />}
+            checkedIcon={<CircleCheckedFilled />}
+            checked={userData.covidinfo.vaccinated.yes === "no"}
             className='radio'
-            type='radio'
+            style={{ marginRight: "1rem" }}
             name='vaccinated'
             value='No'
             onChange={() =>
@@ -214,7 +245,7 @@ function Covid({ userData, setUserData, error }: any) {
                   ...userData.covidinfo,
                   vaccinated: {
                     ...userData.covidinfo.vaccinated,
-                    yes: false,
+                    yes: "no",
                   },
                 },
               })
@@ -225,14 +256,16 @@ function Covid({ userData, setUserData, error }: any) {
         <motion.div
           className='vaccinated'
           style={{
-            height: userData.covidinfo.vaccinated.yes ? "100%" : "0",
-            opacity: userData.covidinfo.vaccinated.yes ? 1 : 0,
-            display: userData.covidinfo.vaccinated.yes ? "block" : "none",
+            height: userData.covidinfo.vaccinated.yes === "yes" ? "100%" : "0",
+            opacity: userData.covidinfo.vaccinated.yes === "yes" ? 1 : 0,
+            display:
+              userData.covidinfo.vaccinated.yes === "yes" ? "block" : "none",
           }}
           animate={{
-            height: userData.covidinfo.vaccinated.yes ? "100%" : "0",
-            opacity: userData.covidinfo.vaccinated.yes ? 1 : 0,
-            display: userData.covidinfo.vaccinated.yes ? "block" : "none",
+            height: userData.covidinfo.vaccinated.yes === "yes" ? "100%" : "0",
+            opacity: userData.covidinfo.vaccinated.yes === "yes" ? 1 : 0,
+            display:
+              userData.covidinfo.vaccinated.yes === "yes" ? "block" : "none",
             transition: { duration: 0.5 },
           }}>
           <h2>When did you get your last covid vaccine?</h2>
@@ -247,7 +280,13 @@ function Covid({ userData, setUserData, error }: any) {
                   borderRadius: "5px",
                   padding: "10px",
                 }}
-                value={new Date(userData.covidinfo.vaccinated.date)}
+                value={
+                  userData.covidinfo.vaccinated.date.length > 0
+                    ? new Date(userData.covidinfo.vaccinated.date)
+                        .toISOString()
+                        .split("T")[0]
+                    : new Date().toISOString().split("T")[0]
+                }
                 placeholder='Date'
                 onChange={(e) =>
                   setUserData({
@@ -261,12 +300,16 @@ function Covid({ userData, setUserData, error }: any) {
                     },
                   })
                 }
-                format='MM/dd/yyyy'
+                format='dd/MM/yyyy'
               />
             </MuiPickersUtilsProvider>
           </ThemeProvider>
         </motion.div>
+        {error.vaccinated_date && (
+          <p className='error'>{error.vaccinated_date}</p>
+        )}
       </div>
+      {error.vaxed && <p className='error'>{error.vaxed}</p>}
     </div>
   );
 }
