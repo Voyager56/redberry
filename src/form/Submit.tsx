@@ -7,7 +7,7 @@ function Submit({ userData, setPage }: any) {
   const [submited, setSubmited] = useState(false);
   let navigate = useNavigate();
   const data = {
-    token: "bda8113f-d33e-4573-8ef0-adc803217fef",
+    token: "32401a85-2695-4abe-88e6-3607e5677ea4",
     first_name: userData.name,
     last_name: userData.lastname,
     email: userData.email,

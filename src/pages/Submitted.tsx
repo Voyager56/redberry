@@ -4,7 +4,7 @@ import Card from "../user-cards/Card";
 
 const fetchUsers = async () => {
   const res =
-    await fetch(`https://bootcamp-2022.devtest.ge/api/applications?token=bda8113f-d33e-4573-8ef0-adc803217fef
+    await fetch(`https://bootcamp-2022.devtest.ge/api/applications?token=32401a85-2695-4abe-88e6-3607e5677ea4
     `);
   const data = await res.json();
   return data;
