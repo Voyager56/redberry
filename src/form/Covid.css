@@ -4,13 +4,13 @@
 }
 
 .Covid {
-  margin-top: 3em;
-  margin: 0 auto;
+  margin-top: 5em;
   width: 30em;
 }
 
 .Covid * {
   text-align: left;
+  font-family: "Montserrat", sans-serif;
 }
 
 .radio {
@@ -50,11 +50,17 @@
   margin-bottom: 0.5em;
 }
 
-input[type="date"] {
+.Covid input[type="date"] {
   margin: 0;
+  width: 25em;
 }
 
-::-webkit-calendar-picker-indicator {
+.Covid input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(38%) sepia(84%) saturate(4471%) hue-rotate(349deg)
     brightness(100%) contrast(101%);
+}
+
+.Covid input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  font-size: 1em;
+  padding: 1.5em;
 }

@@ -1,0 +1,18 @@
+.submittion {
+  background-color: black;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  overflow-y: scroll;
+}
+
+.submitted-applications {
+  color: white;
+  font-size: 3em;
+  font-family: "Rowdies", cursive;
+  margin: 2em;
+  padding-left: 1.5em;
+}

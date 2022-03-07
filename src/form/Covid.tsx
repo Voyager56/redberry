@@ -23,16 +23,16 @@ function Covid({ userData, setUserData, error, setError }: any) {
   return (
     <div className='Covid'>
       <div className='work'>
-        <h2> how would you prefer to work?</h2>
+        <h2>How would you prefer to work?</h2>
         <div className='work-preferance'>
           <div className='work-preferance-item'>
             <Checkbox
               icon={<CircleUnchecked />}
               checkedIcon={<CircleCheckedFilled />}
-              checked={userData.covidinfo.work === "From Sairme Office"}
+              checked={userData.covidinfo.work === "from_office"}
               className='radio'
               name='work-preferance'
-              value='From Sairme Office'
+              value='from_office'
               style={{ marginRight: "1rem" }}
               onChange={handleChande}
             />
@@ -42,10 +42,10 @@ function Covid({ userData, setUserData, error, setError }: any) {
             <Checkbox
               icon={<CircleUnchecked />}
               checkedIcon={<CircleCheckedFilled />}
-              checked={userData.covidinfo.work === "From Home"}
+              checked={userData.covidinfo.work === "from_home"}
               className='radio'
               name='work-preferance'
-              value='From Home'
+              value='from_home'
               style={{ marginRight: "1rem" }}
               onChange={handleChande}
             />
@@ -55,10 +55,10 @@ function Covid({ userData, setUserData, error, setError }: any) {
             <Checkbox
               icon={<CircleUnchecked />}
               checkedIcon={<CircleCheckedFilled />}
-              checked={userData.covidinfo.work === "Hybrid"}
+              checked={userData.covidinfo.work === "hybrid"}
               className='radio'
               name='work-preferance'
-              value='Hybrid'
+              value='hybrid'
               style={{ marginRight: "1rem" }}
               onChange={handleChande}
             />
@@ -94,6 +94,7 @@ function Covid({ userData, setUserData, error, setError }: any) {
                 covid: {
                   ...error.covid,
                   [e.target.name]: "",
+                  contracted_date: "",
                 },
               });
             }}
@@ -125,6 +126,7 @@ function Covid({ userData, setUserData, error, setError }: any) {
                 covid: {
                   ...error.covid,
                   [e.target.name]: "",
+                  contracted_date: "",
                 },
               });
             }}
@@ -145,14 +147,8 @@ function Covid({ userData, setUserData, error, setError }: any) {
           }}>
           <h2>When?</h2>
           <input
-            // style={{
-            //   border: "2px solid var(--redberry-red)",
-            //   borderRadius: "5px",
-            //   padding: "10px",
-            //   width: "17em",
-            // }}
             type='date'
-            pattern='Date'
+            placeholder='Date'
             value={
               userData.covidinfo.contracted.date.length > 0
                 ? new Date(userData.covidinfo.contracted.date)
@@ -215,6 +211,7 @@ function Covid({ userData, setUserData, error, setError }: any) {
                 covid: {
                   ...error.covid,
                   [e.target.name]: "",
+                  vaccinated_date: "",
                 },
               });
             }}
@@ -247,6 +244,7 @@ function Covid({ userData, setUserData, error, setError }: any) {
                 covid: {
                   ...error.covid,
                   [e.target.name]: "",
+                  vaccinated_date: "",
                 },
               });
             }}

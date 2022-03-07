@@ -6,21 +6,24 @@ import { useNavigate } from "react-router-dom";
 function Submit({ userData, setPage }: any) {
   const [submited, setSubmited] = useState(false);
   let navigate = useNavigate();
-  const token = "409e877a-2a8c-45c3-848b-aae4b389365c";
   const data = {
-    token: token,
+    token: "bda8113f-d33e-4573-8ef0-adc803217fef",
     first_name: userData.name,
     last_name: userData.lastname,
     email: userData.email,
-    phone: "+" + userData.phone,
+    phone: userData.phone ? userData.phone : "+00000000000",
     skills: userData.exp,
-    work_preference: {
-      work: userData.covidinfo.work,
-    },
+    work_preference: userData.covidinfo.work,
     had_covid: userData.covidinfo.contracted.yes === "yes" ? true : false,
-    had_covid_at: userData.covidinfo.contracted.date,
+    had_covid_at:
+      userData.covidinfo.contracted.date.length > 0
+        ? userData.covidinfo.contracted.date
+        : "1970-01-01", // if no covid we set the date to 1970
     vaccinated: userData.covidinfo.vaccinated.yes === "yes" ? true : false,
-    vaccinated_at: userData.covidinfo.vaccinated.date,
+    vaccinated_at:
+      userData.covidinfo.vaccinated.date.length > 0
+        ? userData.covidinfo.vaccinated.date
+        : "1970-01-01",
     will_organize_devtalk: userData.abtuser.devtalk === "yes" ? true : false,
     devtalk_topic: userData.abtuser.devtext,
     something_special: userData.abtuser.special,
@@ -33,18 +36,22 @@ function Submit({ userData, setPage }: any) {
   }
 
   const handleSubmit = async () => {
-    const res = await fetch(
-      "https://bootcamp-2022.devtest.ge/api/application",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    const status = res.status;
-    console.log(status);
+    try {
+      const res = await fetch(
+        "https://bootcamp-2022.devtest.ge/api/application",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => console.log(res.json()));
+    } catch (err) {
+      console.log(err);
+    }
+    console.log(data);
   };
 
   return (
@@ -68,7 +75,7 @@ function Submit({ userData, setPage }: any) {
             }}
             onClick={() => {
               setTimeout(() => {
-                // handleSubmit();
+                handleSubmit();
                 setSubmited(true);
               }, 0.5);
             }}>

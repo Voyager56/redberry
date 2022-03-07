@@ -10,10 +10,10 @@ function Personalinfo({ userData, setuserData, errors, setError }: any) {
       phone: "",
     };
 
-    if (userData.name.length < 3) {
+    if (userData.name.length < 2) {
       err.name = "Name must be at least 3 characters";
     }
-    if (userData.lastname.length < 3) {
+    if (userData.lastname.length < 2) {
       err.lastname = "Last name must be at least 3 characters";
     }
     if (userData.email.length < 3) {
@@ -91,10 +91,12 @@ function Personalinfo({ userData, setuserData, errors, setError }: any) {
         type='text'
         name='phone'
         placeholder='Phone'
-        value={userData.phone.length > 0 ? userData.phone : "+"}
+        value={userData.phone.length > 0 ? userData.phone : ""}
         pattern='/^-?\d+\.?\d*$/'
         onChange={(e) => {
           if (/[+][^-0-9\/]+/.test(e.target.value)) return;
+          // check if theres non-integer character at the end of the string
+          if (/[^0-9]$/.test(e.target.value)) return;
           setuserData({
             ...userData,
             [e.target.name]: userData.phone.includes("+")

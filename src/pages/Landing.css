@@ -16,18 +16,22 @@
   border: 2px solid var(--redberry-red);
   padding: 15px;
   font-family: "Rowdies", cursive;
-  font-size: 5em;
+  font-size: 7em;
 }
 
 .start {
   background-color: var(--redberry-red);
   font-family: "Monserrat", sans-serif;
   padding: 15px;
-  /* margin-top: 2em; */
   border-radius: 20px;
+  font-size: 1em;
   text-decoration: none;
   color: #ffffff;
-  width: 10em;
+  width: 15em;
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
@@ -38,8 +42,8 @@
 }
 
 .rocketeer {
-  width: 10em;
-  height: 10em;
+  width: 15em;
+  height: 15em;
 }
 
 @media screen and (max-width: 800px) {

@@ -83,9 +83,8 @@ function Technical({ userData, setUserData, error, setError }: any) {
       exp: [
         ...userData.exp,
         {
-          skill: selectedSkill.title,
-          experience: Number(experience),
           id: id,
+          experience: Number(experience),
         },
       ],
     });
@@ -126,6 +125,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
           <Select
             label='Skill'
             onChange={(e) => handleChande(e as any)}
+            value={selectedSkill.title}
             renderValue={(value) => `${value}`}>
             {skills.map((skill: { id: number; title: string }) => (
               <MenuItem key={skill.id} value={skill.title}>

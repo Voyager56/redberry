@@ -63,11 +63,11 @@ function Aboutyou({ userData, setUserData, userError, setError }: any) {
       )}
       <motion.div
         style={{
-          height: userData.abtuser.devtalk === "yes" ? "100%" : "0",
+          height: userData.abtuser.devtalk === "yes" ? "auto" : "0",
           opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
         }}
         animate={{
-          height: userData.abtuser.devtalk === "yes" ? "100%" : "0",
+          height: userData.abtuser.devtalk === "yes" ? "auto" : "0",
           opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
           transition: {
             duration: 0.5,

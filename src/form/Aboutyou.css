@@ -1,4 +1,5 @@
 .devtalk {
+  margin-top: 2em;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -21,8 +22,13 @@
   margin-top: 3em;
 }
 
+.container * {
+  font-size: 1em;
+  font-family: "Montserrat", sans-serif;
+}
+
 .container h2 {
-  font-size: 18px;
+  /* font-size: 18px; */
   font-family: "Montserrat", sans-serif;
   text-align: left;
 }

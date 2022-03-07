@@ -82,7 +82,7 @@ function Form() {
     if (userData.phone.length > 0) {
       if (!userData.phone.startsWith("+995")) {
         error.phone = "Phone number must start with +995";
-      } else if (userData.phone.length != 12) {
+      } else if (userData.phone.length != 13) {
         error.phone = "Phone must be 12 digits";
       } else if (userData.phone[3] != "5")
         error.phone = "Georgian phone number only";
@@ -207,15 +207,12 @@ function Form() {
   const handleSubmit = (e: any, index: number) => {
     e.preventDefault();
 
-    if (index < page) setPage(index + 1);
-
     // if there are errors, return
     const errors = validateForm();
     if (Object.values(errors).some((error) => error.length > 0)) return;
 
     // else we increase the page and reset errors
 
-    setPage(index + 1);
     setStateErrors({
       personal: {
         name: "",
@@ -240,6 +237,9 @@ function Form() {
         something_special: "",
       },
     });
+
+    if (index + 1 <= page) return;
+    setPage(page + 1);
   };
 
   // pages array for easier rendering
@@ -299,9 +299,11 @@ function Form() {
         <Submit userData={userData} setPage={setPage} />
       ) : (
         <div className='form-wrap'>
-          <div className='formbody'>
-            <h1 className='form-message'>{formMessages[page - 1]}</h1>
-            {pages[page - 1]}
+          <div className='bodywrap'>
+            <div className='formbody'>
+              <h1 className='form-message'>{formMessages[page - 1]}</h1>
+              {pages[page - 1]}
+            </div>
             <div className='buttons'>
               <button
                 className='prev'
@@ -331,7 +333,6 @@ function Form() {
               </button>
             </div>
           </div>
-
           <div className='forminfo'>
             <h1 className='forminfomessage'>{formInfo[page - 1]}</h1>
             <p className='forminfotext'>{formInfoText[page - 1]}</p>
