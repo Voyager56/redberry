@@ -173,12 +173,12 @@ function Form() {
     if (userData.abtuser.devtalk === "") {
       error.devtalk = "Please tell us if you'll organize devtalk";
     }
+    if (userData.abtuser.special.length < 3) {
+      error.something_special = "Please specify your special skills";
+    }
     if (userData.abtuser.devtalk === "yes") {
       if (userData.abtuser.devtext.length < 3) {
         error.devtalk_topic = "Please specify your devtalk subject";
-      }
-      if (userData.abtuser.special.length < 3) {
-        error.something_special = "Please specify your special skills";
       }
     }
 

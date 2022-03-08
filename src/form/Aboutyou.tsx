@@ -61,44 +61,51 @@ function Aboutyou({ userData, setUserData, userError, setError }: any) {
       {userError.aboutyou.devtalk && (
         <p className='error'>{userError.aboutyou.devtalk}</p>
       )}
-      <motion.div
-        style={{
-          height: userData.abtuser.devtalk === "yes" ? "auto" : "0",
-          opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
-        }}
-        animate={{
-          height: userData.abtuser.devtalk === "yes" ? "auto" : "0",
-          opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
-          transition: {
-            duration: 0.5,
-            ease: "easeInOut",
-          },
-        }}
-        className='devtalk-text'>
-        <h2>What would you speak about at Devtalk?</h2>
-        <textarea
-          id='devtalk'
-          style={{ resize: "none", textAlign: "left" }}
-          name='devtalk'
-          value={userData.abtuser.devtext}
-          onChange={(e) => {
-            setUserData({
-              ...userData,
-              abtuser: { ...userData.abtuser, devtext: e.target.value },
-            });
-            if (userData.abtuser.devtext.length > 3) {
-              setError({
-                ...userError,
-                aboutyou: {
-                  ...userError.aboutyou,
-                  devtalk_topic: "",
-                },
-              });
-            }
+      <div className='devtalk-text'>
+        <motion.div
+          className='motion-wrap'
+          style={{
+            x: userData.abtuser.devtalk === "yes" ? 0 : -1000,
+            height: userData.abtuser.devtalk === "yes" ? "auto" : "0",
+            opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
           }}
-          placeholder='I would...'
-          rows={6}
-          cols={70}></textarea>
+          animate={{
+            x: userData.abtuser.devtalk === "yes" ? 0 : -1000,
+            height: userData.abtuser.devtalk === "yes" ? "auto" : "0",
+            opacity: userData.abtuser.devtalk === "yes" ? 1 : 0,
+            transition: {
+              duration: 0.5,
+              spring: {
+                damping: 20,
+              },
+              ease: "easeInOut",
+            },
+          }}>
+          <h2>What would you speak about at Devtalk?</h2>
+          <textarea
+            id='devtalk'
+            style={{ resize: "none", textAlign: "left" }}
+            name='devtalk'
+            value={userData.abtuser.devtext}
+            onChange={(e) => {
+              setUserData({
+                ...userData,
+                abtuser: { ...userData.abtuser, devtext: e.target.value },
+              });
+              if (userData.abtuser.devtext.length > 3) {
+                setError({
+                  ...userError,
+                  aboutyou: {
+                    ...userError.aboutyou,
+                    devtalk_topic: "",
+                  },
+                });
+              }
+            }}
+            placeholder='I would...'
+            rows={6}
+            cols={70}></textarea>
+        </motion.div>
 
         {userError.aboutyou.devtalk_topic && (
           <p className='error'>{userError.aboutyou.devtalk_topic}</p>
@@ -133,7 +140,7 @@ function Aboutyou({ userData, setUserData, userError, setError }: any) {
         {userError.aboutyou.something_special && (
           <p className='error'>{userError.aboutyou.something_special}</p>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 }

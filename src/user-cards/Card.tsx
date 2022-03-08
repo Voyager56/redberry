@@ -177,7 +177,8 @@ function Card(props: { user: any; index: number }) {
           />
         </div>
         <div className='insights'>
-          <h2>Would you attend Devtalks and maybe also organize your own?</h2>
+          <h2>Insights:</h2>
+          <h3>Would you attend Devtalks and maybe also organize your own?</h3>
           <div className='devtalk-radio'>
             <input
               checked={user.will_organize_devtalk}
