@@ -11,7 +11,7 @@ function Submit({ userData, setPage }: any) {
     first_name: userData.name,
     last_name: userData.lastname,
     email: userData.email,
-    phone: userData.phone.length > 0 ? userData.phone : "",
+    phone: userData.phone.length > 0 ? userData.phone : "NaN",
     skills: userData.exp,
     work_preference: userData.covidinfo.work,
     had_covid: userData.covidinfo.contracted.yes === "yes" ? true : false,
