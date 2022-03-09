@@ -11,7 +11,7 @@ function Submit({ userData, setPage }: any) {
     first_name: userData.name,
     last_name: userData.lastname,
     email: userData.email,
-    phone: userData.phone ? userData.phone : "+00000000000",
+    phone: userData.phone.length > 0 ? userData.phone : "",
     skills: userData.exp,
     work_preference: userData.covidinfo.work,
     had_covid: userData.covidinfo.contracted.yes === "yes" ? true : false,
@@ -26,7 +26,7 @@ function Submit({ userData, setPage }: any) {
         ? userData.covidinfo.vaccinated.date
         : "1970/01/01",
     will_organize_devtalk: userData.abtuser.devtalk === "yes" ? true : false,
-    devtalk_topic: userData.abtuser.devtext,
+    devtalk_topic: "NaN",
     something_special: userData.abtuser.special,
   };
 
