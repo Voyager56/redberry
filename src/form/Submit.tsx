@@ -16,14 +16,15 @@ function Submit({ userData, setPage }: any) {
     work_preference: userData.covidinfo.work,
     had_covid: userData.covidinfo.contracted.yes === "yes" ? true : false,
     had_covid_at:
+      // if no covid we set the date to 1970, this will bypass validation but show as empty date when fetched from api
       userData.covidinfo.contracted.date.length > 0
         ? userData.covidinfo.contracted.date
-        : "1970-01-01", // if no covid we set the date to 1970
+        : "1970/01/01",
     vaccinated: userData.covidinfo.vaccinated.yes === "yes" ? true : false,
     vaccinated_at:
       userData.covidinfo.vaccinated.date.length > 0
         ? userData.covidinfo.vaccinated.date
-        : "1970-01-01",
+        : "1970/01/01",
     will_organize_devtalk: userData.abtuser.devtalk === "yes" ? true : false,
     devtalk_topic: userData.abtuser.devtext,
     something_special: userData.abtuser.special,

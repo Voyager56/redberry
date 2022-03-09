@@ -5,6 +5,7 @@ import "./Card.css";
 function Card(props: { user: any; index: number }) {
   const [isOpen, setIsOpen] = useState(false);
   const { user, index } = props;
+
   const skillHashmap = {
     1: "HTML",
     2: "CSS",
@@ -86,7 +87,7 @@ function Card(props: { user: any; index: number }) {
             <div className='work-radio'>
               <input
                 style={{ marginRight: "2em" }}
-                checked={user.work_preference === "from_ofice"}
+                checked={user.work_preference === "from_office"}
                 type='radio'
                 value='work'
                 onClick={() => {
@@ -215,7 +216,6 @@ function Card(props: { user: any; index: number }) {
           />
         </div>
       </motion.div>
-      {/* )} */}
     </motion.div>
   );
 }

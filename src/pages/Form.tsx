@@ -238,11 +238,12 @@ function Form() {
       },
     });
 
+    // checking if button index is less than page to not let user skip unvalidated pages
     if (index + 1 <= page) return;
     setPage(page + 1);
   };
 
-  // pages array for easier rendering
+  // pages array for programamtic rendering
   const pages = [
     <Personalinfo
       userData={userData}
