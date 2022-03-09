@@ -85,6 +85,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
         {
           id: id,
           experience: Number(experience),
+          skill: selectedSkill.title,
         },
       ],
     });
@@ -165,7 +166,7 @@ function Technical({ userData, setUserData, error, setError }: any) {
         {/* conditional rendering for saved data in case of going to different page and then returning back */}
         {userData.exp.map(
           (
-            obj: { skill: string; experience: number; id: number },
+            obj: { experience: number; id: number; skill: string },
             i: number
           ) => {
             return (

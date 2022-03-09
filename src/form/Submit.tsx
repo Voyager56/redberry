@@ -12,11 +12,18 @@ function Submit({ userData, setPage }: any) {
     last_name: userData.lastname,
     email: userData.email,
     phone: userData.phone.length > 0 ? userData.phone : "NaN",
-    skills: userData.exp,
+    skills: userData.exp.map(
+      (obj: { experience: number; skill: string; id: number }) => {
+        return {
+          id: obj.id,
+          experience: obj.experience,
+        };
+      }
+    ),
     work_preference: userData.covidinfo.work,
     had_covid: userData.covidinfo.contracted.yes === "yes" ? true : false,
     had_covid_at:
-      // if no covid we set the date to 1970, this will bypass validation but show as empty date when fetched from api
+      // if no covid date we set the date to 1970, this will bypass validation but show as empty date when fetched from api
       userData.covidinfo.contracted.date.length > 0
         ? userData.covidinfo.contracted.date
         : "1970/01/01",
@@ -77,6 +84,7 @@ function Submit({ userData, setPage }: any) {
             onClick={() => {
               setTimeout(() => {
                 handleSubmit();
+                console.log(data);
                 setSubmited(true);
               }, 0.5);
             }}>
